@@ -17,20 +17,34 @@
 </head>
 
 <body class="font-sans text-gray-900 antialiased">
-    <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900">
-        <div>
-            <a href="{{ route('dashboard') }}" >
-                <x-zondicon-lock-closed class="w-10 h-10"/>
+    <div
+        class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+        <div class="text-center">
+            <a href="{{ route('dashboard') }}">
+                <x-zondicon-lock-closed class="w-20 h-20" />
             </a>
+            <h2 class="text-2xl">{{ __('403') }}</h2>
         </div>
 
         <div
-            class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-lg">
-            <h2 class="text-center text-2xl">{{ __('Forbidden') }}</h2>
+            class="w-full sm:max-w-md mt-4 px-6 py-4 bg-white dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-lg text-gray-900 dark:text-gray-100">
             <div class="row">
-                <p>{{ __('unauthorized') }}</p>
+                <h3 class="text-center text-xl ">{{ __('Unauthorized') }}</h3>
+            </div>
+            <div class="row">
+                <p>{{ __('desc-unauthorized') }}</p>
+            </div>
+            <div class="row text-right mt-4">
+                <a href="{{ route('dashboard') }}">
+                    <button
+                        class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded inline-flex items-center">
+                        <x-fas-home class="fill-current w-4 h-4 mr-2"/>
+                        <span>{{ __('go-back-:attribute', ['attribute' => __('dashboard')]) }}</span>
+                    </button>
+                </a>
             </div>
         </div>
+    </div>
     </div>
 </body>
 
