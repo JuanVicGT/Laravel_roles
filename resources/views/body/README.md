@@ -1,7 +1,7 @@
 ## Menú de navegación
-Se tienen dos archivos para la navegación, que se pueden intercambiar en el archivo blade que se encuentra en los layouts llamado "navigation". Las dos opciones son:
+La carpeta "dropdowns" están hechos para los menús de los distintos módulos que tenga el sistema, dejando así en el archivo navlinks únicamente las llamadas (para no sobre cargar de opciones el menú de navegación).
 
-- navbar
-- sidebar
+Se tienen dos archivos, siendo uno la vista móvil y el otro la versión para pantallas más grandes.
 
-Si se emplea el navbar, no se debería mostrar el header ya que cumplen la misma posición en pantalla.
+- responsive_navlinks = Versión para móviles
+- navlinks = Pantallas más grandes

@@ -2,6 +2,6 @@
     {{ __('Dashboard') }}
 </x-nav-link>
 
-<x-nav-link :href="route('profile.edit')" :active="request()->routeIs('profile.edit')">
-    {{ __('DEMO MENU') }}
-</x-nav-link>
+<x-nav-dropdown align="left" width="48" :active="request()->routeIs('profidle.edit', 'sapo', 'profile.edit')" >
+    @include('body.navbar.menu.demo')
+</x-nav-dropdown>
