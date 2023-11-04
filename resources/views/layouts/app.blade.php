@@ -14,20 +14,32 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <!-- Custom Scripts -->
+    <link href="{{ asset('backend/assets/css/app.css') }}" rel="stylesheet" type="text/css" />
 </head>
 
-<body class="font-sans antialiased">
+<body class="font-sans antialiased" x-data="{ open: false, scrolledFromTop: false }"
+    :class="{
+        'overflow-hidden': open,
+        'overflow-scroll': !open
+    }">
     <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
         <!-- Page Heading -->
-        @include('layouts.navigation')
+        <header class="fixed w-full h-fit flex border-b border-gray-100 dark:border-gray-700"
+            :class="{ 'h-24': !scrolledFromTop, 'h-14': scrolledFromTop }">
+            @include('layouts.navigation')
+        </header>
 
         <!-- Page Content -->
-        <main>
+        <main class="pt-8">
             {{ $slot }}
         </main>
 
         <!-- Page Footer -->
-        @include('body.footer')
+        <footer class="bg-white dark:bg-gray-800 shadow sticky bottom-0">
+            @include('body.footer')
+        </footer>
 
     </div>
 </body>

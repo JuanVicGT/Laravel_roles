@@ -1,6 +1,6 @@
-<nav class="w-full">
+<nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 w-full">
     <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
@@ -40,8 +40,8 @@
     </div>
 
     <!-- Responsive Navigation -->
-    <div  :class="{ 'fixed': open, 'hidden': !open }" class="hidden sm:hidden w-full overflow-y-scroll max-h-screen bg-white dark:bg-gray-800">
-        <div class="pt-2 pb-20">
+    <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
+        <div class="pt-2 pb-3 space-y-1">
             @include('body.navbar.responsive_navlinks')
         </div>
     </div>

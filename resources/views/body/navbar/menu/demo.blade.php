@@ -1,6 +1,5 @@
     <x-slot name="trigger">
-        <button
-            class="flex h-full items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
+        <button class="flex h-full items-center transition duration-150 ease-in-out">
             <div>Admin</div>
 
             <div class="ml-1">
@@ -14,13 +13,22 @@
     </x-slot>
 
     <x-slot name="content">
+
         <x-dropdown-link :href="route('profile.edit')" :active="request()->routeIs('profile.edit')">
-            <x-zondicon-lock-closed class="inline w-4 h-4" /><label class="pl-2">{{ __('Roles') }}</label>
+            <div class="flex items-center">
+                <x-zondicon-lock-closed class="w-4 h-4 mr-2" />
+                <div class="flex items-center w-full justify-between">
+                    <p class="text-base">Hola</p>
+                </div>
+            </div>
         </x-dropdown-link>
-        <x-dropdown-link :href="route('dashboard')" :active="request()->routeIs('permissions')">
-            {{ __('Permissions') }}
-        </x-dropdown-link>
-        <x-dropdown-link :href="route('dashboard')" :active="request()->routeIs('user_roles')">
+
+        <!-- Admin settings -->
+        <x-multiple-dropdown-nav :active="request()->routeIs('profile.edit')">
+            @include('body.navbar.submenu.demo')
+        </x-multiple-dropdown-nav>
+
+        <x-dropdown-link :active="request()->routeIs('user_roles')">
             {{ __('User Roles') }}
         </x-dropdown-link>
     </x-slot>
