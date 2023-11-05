@@ -14,7 +14,27 @@ class PermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->createEmployeePermissions();
+        $this->createAllPermissions();
+    }
+
+    /**
+     * The function getAllMenus returns an array containing the nav options.
+     * 
+     * @return array
+     */
+    private function getAllMenus(): array
+    {
+        return ['admin'];
+    }
+
+    /**
+     * The function getAllModels returns an array containing the models.
+     * 
+     * @return array
+     */
+    private function getAllModels(): array
+    {
+        return ['user'];
     }
 
     /**
@@ -22,79 +42,24 @@ class PermissionSeeder extends Seeder
      * 
      * @return array
      */
-    private function getFullPermissions(): array
+    private function getAllPermissions(): array
     {
-        return ['create', 'delete', 'view', 'edit', 'list'];
+        return ['create', 'delete', 'edit', 'list', 'view'];
     }
 
-    /**
-     * The function returns an array of basic permissions.
-     * 
-     * @return array
-     */
-    private function getBasicPermissions(): array
+    private function createAllPermissions()
     {
-        return ['view', 'edit', 'list'];
-    }
+        /// Nav menu
+        foreach ($this->getAllMenus() as $menu) {
+            $permissionPath = "menu_{$menu}";
+            Permission::create(['name' => $permissionPath]);
+        }
 
-    /**
-     * The function "getSimplePermissions" returns an array with the more basic permissions
-     * 
-     * @return array
-     */
-    private function getSimplePermissions(): array
-    {
-        return ['view', 'list'];
-    }
-
-    /**
-     * The function "getPagesPermissions" returns an array of permissions for different pages
-     * 
-     * @return array<string, array>
-     */
-    private function getPagesPermissions(): array
-    {
-        return [
-            'dashboard' => $this->getFullPermissions(),
-            'products' => $this->getSimplePermissions()
-        ];
-    }
-
-    /**
-     * The function "getPagesPerRole" returns an array that maps roles to the pages accessible by each
-     * role.
-     * 
-     * @return array
-     */
-    private function getPagesPerRole(): array
-    {
-        return [
-            'employee' => [
-                'dashboard'
-            ]
-        ];
-    }
-
-
-    /**
-     * Assigns permissions to an employee role based on predefined pages
-     * and permissions.
-     * 
-     * @param string
-     */
-    private function createEmployeePermissions(string $roleName = 'employee'): void
-    {
-        $role = Role::findByName($roleName);
-
-        $pages = $this->getPagesPerRole();
-        foreach ($pages[$roleName] as $page) {
-            $pagesPermissions = $this->getPagesPermissions();
-
-            foreach ($pagesPermissions[$page] as $permission) {
-                $permissionPath = "{$permission}_{$page}";
-
+        /// Models permissions
+        foreach ($this->getAllModels() as $model) {
+            foreach ($this->getAllPermissions() as $permission) {
+                $permissionPath = "{$permission}_{$model}";
                 Permission::create(['name' => $permissionPath]);
-                $role->givePermissionTo($permissionPath);
             }
         }
     }

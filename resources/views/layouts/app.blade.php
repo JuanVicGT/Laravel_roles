@@ -16,32 +16,29 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <!-- Custom Scripts -->
-    <link href="{{ asset('backend/assets/css/app.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('backend/assets/css/app.min.css') }}" rel="stylesheet" type="text/css" />
 </head>
 
-<body class="font-sans antialiased" x-data="{ open: false, scrolledFromTop: false }"
+<body class="font-sans antialiased bg-gray-100 dark:bg-gray-900" x-data="{ open: false, scrolledFromTop: false }"
     :class="{
         'overflow-hidden': open,
         'overflow-scroll': !open
     }">
-    <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
-        <!-- Page Heading -->
-        <header class="fixed w-full h-fit flex border-b border-gray-100 dark:border-gray-700"
-            :class="{ 'h-24': !scrolledFromTop, 'h-14': scrolledFromTop }">
-            @include('layouts.navigation')
-        </header>
+    <!-- Page Heading -->
+    <header class="fixed w-full z-30 h-fit flex border-b border-gray-100 dark:border-gray-700"
+        :class="{ 'h-24': !scrolledFromTop, 'h-14': scrolledFromTop }">
+        @include('layouts.navigation')
+    </header>
 
-        <!-- Page Content -->
-        <main class="pt-8">
-            {{ $slot }}
-        </main>
+    <!-- Page Content -->
+    <main class="pt-8">
+        {{ $slot }}
+    </main>
 
-        <!-- Page Footer -->
-        <footer class="bg-white dark:bg-gray-800 shadow sticky bottom-0">
-            @include('body.footer')
-        </footer>
-
-    </div>
+    <!-- Page Footer -->
+    <footer class="bg-white dark:bg-gray-800 shadow sticky bottom-0">
+        @include('body.footer')
+    </footer>
 </body>
 
 </html>
