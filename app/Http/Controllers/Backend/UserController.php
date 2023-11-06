@@ -35,7 +35,7 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        //
+        return redirect()->route('edit.item')->with('alerts', $this->getAlerts());
     }
 
     /**
@@ -63,7 +63,7 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        //
+        return redirect()->route('edit.item')->with('alerts', $this->getAlerts());
     }
 
     /**
@@ -71,6 +71,6 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        return redirect()->route('edit.item')->with('alerts', $this->getAlerts());
     }
 }

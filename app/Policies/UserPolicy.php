@@ -17,6 +17,7 @@ class UserPolicy
      */
     public function viewAny(User $user): bool
     {
+        return true;
         return $user->admin || $user->hasPermissionTo('list_' . $this->modelName);
     }
 

@@ -44,7 +44,7 @@ class PermissionSeeder extends Seeder
      */
     private function getAllPermissions(): array
     {
-        return ['create', 'delete', 'edit', 'list', 'view'];
+        return ['list', 'view', 'create', 'update', 'delete'];
     }
 
     private function createAllPermissions()
