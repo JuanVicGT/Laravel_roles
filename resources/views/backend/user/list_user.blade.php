@@ -11,11 +11,9 @@
         </x-alert>
     @endforeach
 
-    <div class="py-12" name="content">
+    <div class="pt-12 pb-4" name="content">
         <div class="max-w-screen mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-4">
-
-            </div>
+            <livewire:backend.user-table />
         </div>
     </div>
 
