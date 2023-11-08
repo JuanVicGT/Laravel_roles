@@ -7,11 +7,9 @@ use Livewire\Component;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 
-abstract class Main extends Component
+class Main extends Component
 {
     use WithPagination;
-
-    abstract public function render(): mixed;
 
     #[Url()]
     public $search = '';
@@ -49,5 +47,18 @@ abstract class Main extends Component
 
         $this->sortBy = $sortByField;
         $this->sortDir = 'DESC';
+    }
+
+    public function render(): mixed
+    {
+        $users = User::where(
+            fn ($query) =>
+            $query->where('name', 'like', "%{$this->search}%")
+                ->orWhere('email', 'like', "%{$this->search}%")
+        )
+            ->orderBy($this->sortBy, $this->sortDir)
+            ->paginate($this->perPage);
+
+        return view('livewire.datatable.main', ['users' => $users]);
     }
 }
