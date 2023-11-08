@@ -4,11 +4,21 @@
             <!-- Start coding here -->
             <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
                 <div x-data="{ expanded: false }">
-                    <button @click="expanded = ! expanded">Show Content</button>
+                    <button
+                        class="bg-transparent p-2 hover:bg-blue-500 text-blue-700 font-semibold hover:text-white border border-blue-500 hover:border-transparent rounded"
+                        @click="expanded = ! expanded">
+                        <x-zondicon-filter class="w-5 h-5" />
+                    </button>
 
-                    <p x-show="expanded" x-collapse>
+                    <div x-data="{ expanded: false }" x-show="expanded"
+                        x-transition:enter="transform ease-out duration-300 transition"
+                        x-transition:enter-start="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-2"
+                        x-transition:enter-end="translate-y-0 opacity-100 sm:translate-x-0"
+                        x-transition:leave="transition ease-in duration-100" x-transition:leave-start="opacity-100"
+                        x-transition:leave-end="opacity-0"
+                        class="max-w-sm w-full bg-white shadow-lg rounded-lg pointer-events-auto">
                         lorem ispm
-                    </p>
+                    </div>
                 </div>
                 <div class="flex items-center justify-between d p-4">
                     <div class="flex">
@@ -24,6 +34,9 @@
                             <input wire:model.live.debounce.300ms="search" type="text"
                                 class="text-gray-800 dark:text-gray-200 border bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 "
                                 placeholder="Search" required="">
+                        </div>
+                        <div class="relative px-4">
+
                         </div>
                     </div>
 
