@@ -102,5 +102,7 @@
     "add-new": "Agregar",
     "dashboard": "Panel",
     "go-to-:attribute": "Ir a :attribute",
-    "go-back-:attribute": "Regresar al :attribute"
+    "go-back-:attribute": "Regresar al :attribute",
+    "export": "Exportar",
+    "print": "Imprimir"
 }

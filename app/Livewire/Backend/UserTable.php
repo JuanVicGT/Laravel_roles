@@ -21,7 +21,7 @@ class UserTable extends Component
     public $sortDir = 'DESC';
 
     #[Url()]
-    public $perPage = 10;
+    public $perPage = 7;
 
     public function updatedSearch()
     {
@@ -59,6 +59,7 @@ class UserTable extends Component
             ->orderBy($this->sortBy, $this->sortDir)
             ->paginate($this->perPage);
 
-        return view('livewire.backend.user-table', ['users' => $users]);
+        return view('livewire.datatable.main', ['users' => $users]);
+        // return view('livewire.backend.user-table', ['users' => $users]);
     }
 }

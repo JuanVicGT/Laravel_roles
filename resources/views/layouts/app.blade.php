@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" >
 
 <head>
     <meta charset="utf-8">
@@ -19,10 +19,10 @@
     <link href="{{ asset('backend/assets/css/app.min.css') }}" rel="stylesheet" type="text/css" />
 </head>
 
-<body class="font-sans antialiased bg-gray-100 dark:bg-gray-900" x-data="{ open: false, scrolledFromTop: false }"
-    :class="{
-        'overflow-hidden': open,
-        'overflow-scroll': !open
+<body class="font-sans antialiased bg-gray-100 md:overflow-scroll dark:bg-gray-900" x-data="{ open_nav: false, scrolledFromTop: false }"
+    class="{
+        'overflow-hidden': open_nav,
+        'overflow-scroll': !open_nav
     }">
     <!-- Page Heading -->
     <header class="fixed w-full z-30 h-fit flex border-b border-gray-100 dark:border-gray-700"
