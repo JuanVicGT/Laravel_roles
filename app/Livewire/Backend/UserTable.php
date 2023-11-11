@@ -12,6 +12,9 @@ class UserTable extends Component
     use WithPagination;
 
     #[Url()]
+    public $filter_start_date = '';
+
+    #[Url()]
     public $search = '';
 
     #[Url(history: true)]
@@ -51,10 +54,15 @@ class UserTable extends Component
 
     public function render(): mixed
     {
-        $users = User::where(
+        $users = User::when(
+            !empty($this->search),
             fn ($query) =>
             $query->where('name', 'like', "%{$this->search}%")
                 ->orWhere('email', 'like', "%{$this->search}%")
+        )->when(
+            !empty($this->filter_start_date),
+            fn ($query) =>
+            $query->where('created_at', '>', "{$this->filter_start_date}")
         )
             ->orderBy($this->sortBy, $this->sortDir)
             ->paginate($this->perPage);
