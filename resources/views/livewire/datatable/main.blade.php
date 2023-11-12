@@ -1,98 +1,103 @@
 <div>
     <section class="w-full">
         <div class="max-w-screen">
-            <!-- Start coding here -->
             <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden"
                 x-data="{ expanded: false }">
-                <div class="flex items-center justify-between d p-4">
-                    <div class="flex w-full px-4">
-                        <div class="relative w-full">
-                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-100"
-                                    fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd"
-                                        d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                            <input wire:model.live.debounce.300ms="search" type="text"
-                                class="h-10 text-gray-800 dark:text-gray-200 border bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2"
-                                placeholder="Search" required="">
+
+                <!-- Header -->
+                <section class="w-full p-4">
+                    <div class="md:flex items-center justify-between">
+                        <div class="block md:flex w-full pr-4">
+                            <x-text-input id="search" class="block w-full" type="text" name="search"
+                                placeholder="{{ __('Search') }}" wire:model="search" />
+                        </div>
+
+                        <!-- Action Buttons (include filter button) -->
+                        <div class="justify-center flex pt-4 md:pt-0 space-x-3">
+                            @include('livewire.datatable.components.table-action-buttons')
                         </div>
                     </div>
 
-                    <!-- Action Buttons (include filter button) -->
-                    <div class="flex space-x-3">
-                        @include('livewire.datatable.components.table-action-buttons')
+                    <!-- Filters -->
+                    <div x-data="{ ghost: false }" x-show="expanded"
+                        x-transition:enter="transform ease-in duration-300 transition"
+                        x-transition:enter-start="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-2"
+                        x-transition:enter-end="translate-y-0 opacity-100 sm:translate-x-0"
+                        x-transition:leave="transition ease-out duration-100" x-transition:leave-start="opacity-100"
+                        x-transition:leave-end="opacity-0" class="w-full py-2.5 space-y-2">
+                        @include('livewire.datatable.components.table-filters')
                     </div>
-                </div>
+                </section>
 
-                <!-- Filters Section -->
-                <div x-data="{ ghost: false }" x-show="expanded"
-                    x-transition:enter="transform ease-in duration-300 transition"
-                    x-transition:enter-start="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-2"
-                    x-transition:enter-end="translate-y-0 opacity-100 sm:translate-x-0"
-                    x-transition:leave="transition ease-out duration-100" x-transition:leave-start="opacity-100"
-                    x-transition:leave-end="opacity-0" class="w-full pointer-events-auto p-4">
-                    @include('livewire.datatable.components.table-filters')
-                </div>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-100">
-                        <thead
-                            class="text-xsuppercase dark:text-gray-200 border bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600">
-                            <tr>
-                                @include('livewire.datatable.components.table-sortable-th', [
-                                    'name' => 'name',
-                                    'displayName' => 'Name',
-                                ])
-                                @include('livewire.datatable.components.table-sortable-th', [
-                                    'name' => 'email',
-                                    'displayName' => 'Email',
-                                ])
-                                @include('livewire.datatable.components.table-sortable-th', [
-                                    'name' => 'admin',
-                                    'displayName' => 'Role',
-                                ])
-                                @include('livewire.datatable.components.table-sortable-th', [
-                                    'name' => 'id',
-                                    'displayName' => 'id',
-                                ])
-                                @include('livewire.datatable.components.table-sortable-th', [
-                                    'name' => 'updated_at',
-                                    'displayName' => 'Last Update',
-                                ])
-                                <th scope="col" class="px-4 py-3">
-                                    <span class="sr-only">Actions</span>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($users as $user)
-                                <tr wire:key="{{ $user->id }}" class="border-b dark:border-gray-700">
-                                    <th scope="row"
-                                        class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        {{ $user->name }}</th>
-                                    <td class="px-4 py-3">{{ $user->email }}</td>
-                                    <td class="px-4 py-3 {{ $user->is_admin ? 'text-green-500' : 'text-blue-500' }}">
-                                        {{ $user->is_admin ? 'Admin' : 'Member' }}</td>
-                                    <td class="px-4 py-3">{{ $user->id }}</td>
-                                    <td class="px-4 py-3">{{ $user->updated_at }}</td>
-                                    <td class="px-4 py-3 flex items-center justify-end">
-                                        <button
-                                            onclick="confirm('Are you sure you want to delete {{ $user->name }} ?') || event.stopImmediatePropagation()"
-                                            wire:click="delete({{ $user->id }})"
-                                            class="px-3 py-1 bg-red-500 text-white rounded">X</button>
-                                    </td>
+                <!-- Table -->
+                <section>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-100">
+                            <thead
+                                class="text-xsuppercase dark:text-gray-200 border bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600">
+                                <tr>
+                                    @include('livewire.datatable.components.table-sortable-th', [
+                                        'name' => 'name',
+                                        'displayName' => 'Name',
+                                    ])
+                                    @include('livewire.datatable.components.table-sortable-th', [
+                                        'name' => 'email',
+                                        'displayName' => 'Email',
+                                    ])
+                                    @include('livewire.datatable.components.table-sortable-th', [
+                                        'name' => 'admin',
+                                        'displayName' => 'Role',
+                                    ])
+                                    @include('livewire.datatable.components.table-sortable-th', [
+                                        'name' => 'id',
+                                        'displayName' => 'id',
+                                    ])
+                                    @include('livewire.datatable.components.table-sortable-th', [
+                                        'name' => 'updated_at',
+                                        'displayName' => 'Last Update',
+                                    ])
+                                    <th scope="col" class="px-4 py-3">
+                                        <span class="sr-only">Actions</span>
+                                    </th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                            </thead>
+                            <tbody>
+                                @foreach ($users as $user)
+                                    <tr wire:key="{{ $user->id }}" class="border-b dark:border-gray-700">
+                                        <th scope="row"
+                                            class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                            {{ $user->name }}</th>
+                                        <td class="px-4 py-3">{{ $user->email }}</td>
+                                        <td class="px-4 py-3 {{ $user->admin ? 'text-green-500' : 'text-blue-500' }}">
+                                            {{ $user->admin ? 'Admin' : 'Member' }}</td>
+                                        <td class="px-4 py-3">{{ $user->id }}</td>
+                                        <td class="px-4 py-3">{{ $user->updated_at }}</td>
+                                        <td class="px-4 py-3 flex items-center justify-end">
+                                            <div class="flex justify-center pt-4 md:pt-0 space-x-3">
+                                                <a href="{{ route('edit.user', $user->id) }}">
+                                                    <x-hover-button
+                                                        class="hover:bg-yellow-500 text-yellow-700 dark:text-yellow-500 border-yellow-500">
+                                                        <x-fas-pencil class="w-5 h-5" />
+                                                    </x-hover-button>
+                                                </a>
+                                                <x-hover-button
+                                                    x-on:click="$dispatch('open-modal', 'confirm-user-deletion')"
+                                                    class="hover:bg-red-500 text-red-700 dark:text-red-500 border-red-500">
+                                                    <x-fas-trash-can class="w-5 h-5" />
+                                                </x-hover-button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
 
-                <div class="py-4 px-3">
-                    <div class="flex justify-normal">
-                        <div class="flex space-x-4 items-center">
+                <!-- Footer -->
+                <section class="py-4 px-3">
+                    <div class="md:flex md:justify-normal">
+                        <div class="hidden md:flex md:space-x-4 items-center">
                             <label
                                 class="w-32 text-sm font-medium text-gray-800 dark:text-gray-200">{{ __('Show') }}</label>
                             <select wire:model.live='perPage'
@@ -108,8 +113,33 @@
                             {{ $users->links('livewire.datatable.components.pagination-links') }}
                         </div>
                     </div>
-                </div>
+                </section>
             </div>
         </div>
+    </section>
+
+    <!-- Modals -->
+    <section>
+        <x-modal name="confirm-user-deletion" focusable>
+            <div class="p-6">
+                <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                    {{ __('Are you sure you want to delete your account?') }}
+                </h2>
+
+                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                    {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.') }}
+                </p>
+
+                <div class="mt-6 flex justify-between">
+                    <x-secondary-button x-on:click="$dispatch('close')">
+                        {{ __('Cancel') }}
+                    </x-secondary-button>
+
+                    <x-danger-button class="ml-3" >
+                        {{ __('Delete') }}
+                    </x-danger-button>
+                </div>
+            </div>
+        </x-modal>
     </section>
 </div>

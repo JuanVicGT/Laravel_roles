@@ -14,9 +14,6 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-    <!-- Custom Scripts -->
-    <link href="{{ asset('backend/assets/css/app.min.css') }}" rel="stylesheet" type="text/css" />
 </head>
 
 <body class="font-sans antialiased bg-gray-100 md:overflow-scroll dark:bg-gray-900" x-data="{ open_nav: false, scrolledFromTop: false }"

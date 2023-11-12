@@ -1,4 +1,4 @@
-<div class="flex flex-wrap">
+<div class="flex flex-wrap space-y-2">
     <!-- Name -->
     <div class="w-full md:w-1/2 px-2">
         <x-input-label for="name" :value="__('Name')" />
@@ -14,7 +14,7 @@
 </div>
 
 <!-- Start date -->
-<div class="flex flex-wrap">
+<div class="flex flex-wrap space-y-2 mt-2">
     <!-- Date -->
     <div class="w-full md:w-1/2 px-2">
         <x-input-label for="start_date" :value="__('Date')" />
