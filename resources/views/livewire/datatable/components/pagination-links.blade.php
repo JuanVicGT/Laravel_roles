@@ -1,6 +1,6 @@
 @if ($paginator->hasPages())
-    <div class="flex justify-between md:px-4">
-        <section class="grid content-center text-gray-500 dark:text-gray-400">
+    <div class="flex justify-center md:justify-between md:px-4">
+        <section class="hidden md:grid content-center text-gray-500 dark:text-gray-400">
             {{ __('Showing :init to :end from :count results', [
                 'init' => $paginator->firstItem(),
                 'end' => $paginator->lastItem(),
@@ -26,11 +26,11 @@
                     <!-- Array Of Links -->
                     @if (is_array($element))
                         @foreach ($element as $page => $url)
-                            <!--  Use three dots when current page is greater than 2.  -->
+                            <!--  Go to first page  -->
                             @if ($paginator->currentPage() > 2 && $page === 2)
                                 <li class="hidden md:inline-block md:pr-2">
                                     <button
-                                        class="flex items-center justify-center px-4 h-10 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                                        class="flex items-center justify-center px-4 h-10 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                                         wire:click="gotoPage(1)">1</button>
                                 </li>
                             @endif
@@ -50,7 +50,7 @@
                                 </li>
                             @endif
 
-                            <!--  Use three dots when current page is away from end.  -->
+                            <!--  Go to last page  -->
                             @if ($paginator->currentPage() < $paginator->lastPage() - 1 && $page === $paginator->lastPage() - 1)
                                 <li class="hidden md:inline-block md:pl-2">
                                     <button

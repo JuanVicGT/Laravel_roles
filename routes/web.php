@@ -32,10 +32,13 @@ Route::middleware('auth')->group(function () {
     /** ========== User section  ========== */
     Route::controller(UserController::class)->group(function () {
         // Views
-        Route::get('/user', 'index')->name('list.user');
-        Route::get('/user/{id}', 'show')->name('show.user');
+        Route::get('/users', 'index')->name('list.user');
+        Route::get('/user/{id}', 'edit')->name('edit.user');
 
         // Actions
+        Route::post('/user', 'store')->name('store.user');
+        Route::patch('/user', 'update')->name('update.user');
+        Route::delete('/user', 'delete')->name('delete.user');
     });
 });
 
