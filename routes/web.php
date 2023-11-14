@@ -33,6 +33,7 @@ Route::middleware('auth')->group(function () {
     Route::controller(UserController::class)->group(function () {
         // Views
         Route::get('/users', 'index')->name('list.user');
+        Route::get('/user', 'create')->name('create.user');
         Route::get('/user/{id}', 'edit')->name('edit.user');
 
         // Actions

@@ -36,6 +36,9 @@
     <footer class="bg-white dark:bg-gray-800 shadow sticky bottom-0">
         @include('body.footer')
     </footer>
+    
+    <!-- Avoid double injection of scripts -->
+    @livewireScriptConfig 
 </body>
 
 </html>

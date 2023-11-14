@@ -6,16 +6,11 @@ use App\Models\User;
 use Livewire\Component;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\Auth;
 
 class UserTable extends Component
 {
     use WithPagination;
-
-    #[Url()]
-    public $filter_start_date = '';
-
-    #[Url()]
-    public $search = '';
 
     #[Url(history: true)]
     public $sortBy = 'created_at';
@@ -23,8 +18,11 @@ class UserTable extends Component
     #[Url(history: true)]
     public $sortDir = 'DESC';
 
-    #[Url()]
     public $perPage = 7;
+
+    // Filters
+    public $search = '';
+    public $filter_start_date = '';
 
     public function updatedSearch()
     {
@@ -38,6 +36,8 @@ class UserTable extends Component
 
     public function delete(User $user)
     {
+        $this->authorize('delete', Auth::user());
+
         $user->delete();
     }
 
@@ -67,7 +67,6 @@ class UserTable extends Component
             ->orderBy($this->sortBy, $this->sortDir)
             ->paginate($this->perPage);
 
-        return view('livewire.datatable.main', ['users' => $users]);
-        // return view('livewire.backend.user-table', ['users' => $users]);
+        return view('livewire.backend.user-table', ['users' => $users]);
     }
 }

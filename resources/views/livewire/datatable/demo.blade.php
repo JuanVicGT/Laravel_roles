@@ -19,12 +19,7 @@
                     </div>
 
                     <!-- Filters -->
-                    <div x-data="{ ghost: false }" x-show="expanded"
-                        x-transition:enter="transform ease-in duration-300 transition"
-                        x-transition:enter-start="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-2"
-                        x-transition:enter-end="translate-y-0 opacity-100 sm:translate-x-0"
-                        x-transition:leave="transition ease-out duration-100" x-transition:leave-start="opacity-100"
-                        x-transition:leave-end="opacity-0" class="w-full py-2.5 space-y-2">
+                    <div x-data="{ ghost: false }" x-show="expanded" class="w-full py-2.5 space-y-2">
                         @include('livewire.datatable.components.table-filters')
                     </div>
                 </section>
@@ -80,11 +75,23 @@
                                                         <x-fas-pencil class="w-5 h-5" />
                                                     </x-hover-button>
                                                 </a>
+
                                                 <x-hover-button
-                                                    x-on:click="$dispatch('open-modal', 'confirm-user-deletion')"
+                                                    x-on:click="$dispatch('open-modal', 'confirm-user-deletion-{{ $user->id }}'); console.log('{{ $user->id }}');"
                                                     class="hover:bg-red-500 text-red-700 dark:text-red-500 border-red-500">
                                                     <x-fas-trash-can class="w-5 h-5" />
                                                 </x-hover-button>
+
+                                                <!-- Modals wire:click=\"delete({\{ $user->id }\})\" -->
+                                                @include(
+                                                    'livewire.datatable.components.table-delete-modal',
+                                                    [
+                                                        'id' => $user->id,
+                                                        'model' => 'user',
+                                                        'title' => 'Are you sure you want to delete?',
+                                                        'description' => 'Once deleted, it cannot be reversed.',
+                                                    ]
+                                                )
                                             </div>
                                         </td>
                                     </tr>
@@ -116,30 +123,5 @@
                 </section>
             </div>
         </div>
-    </section>
-
-    <!-- Modals -->
-    <section>
-        <x-modal name="confirm-user-deletion" focusable>
-            <div class="p-6">
-                <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                    {{ __('Are you sure you want to delete your account?') }}
-                </h2>
-
-                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                    {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.') }}
-                </p>
-
-                <div class="mt-6 flex justify-between">
-                    <x-secondary-button x-on:click="$dispatch('close')">
-                        {{ __('Cancel') }}
-                    </x-secondary-button>
-
-                    <x-danger-button class="ml-3" >
-                        {{ __('Delete') }}
-                    </x-danger-button>
-                </div>
-            </div>
-        </x-modal>
     </section>
 </div>
