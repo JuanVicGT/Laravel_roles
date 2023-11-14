@@ -56,8 +56,8 @@ class UserSeeder extends Seeder
     {
         // Create users
         User::factory()->create([
-            'admin' => true,
             'level' => 99,
+            'admin' => true,
             'name' => 'JuanV',
             'username' => 'admin',
             'email' => 'JuanEscobarGT@outlook.com',
@@ -71,6 +71,7 @@ class UserSeeder extends Seeder
         // Create users
         $user = User::factory()->create([
             'level' => 10,
+            'admin' => true,
             'name' => 'RudeN',
             'username' => 'user1',
             'email' => 'preubecitas@gmail.com',

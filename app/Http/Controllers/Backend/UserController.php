@@ -35,6 +35,8 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
+        $this->authorize('create', Auth::user());
+
         return redirect()->route('edit.item')->with('alerts', $this->getAlerts());
     }
 
@@ -53,9 +55,9 @@ class UserController extends Controller
      */
     public function edit()
     {
-        $this->authorize('view', Auth::user());
+        $this->authorize('update', Auth::user());
 
-        return view('backend.user.show_user')->with('alerts', $this->getAlerts());
+        return view('backend.user.edit_user')->with('alerts', $this->getAlerts());
     }
 
     /**
@@ -63,6 +65,8 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
+        $this->authorize('update', Auth::user());
+
         return redirect()->route('edit.item')->with('alerts', $this->getAlerts());
     }
 
@@ -71,6 +75,8 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        $this->authorize('delete', Auth::user());
+
         return redirect()->route('edit.item')->with('alerts', $this->getAlerts());
     }
 }

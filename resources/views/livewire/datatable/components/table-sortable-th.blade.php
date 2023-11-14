@@ -1,6 +1,6 @@
 <th scope="col" class="px-4 py-3" wire:click="setSortBy('{{ $name }}')">
     <button class="flex items-center w-full">
-        {{ $displayName }}
+        {{ __($displayName) }}
         @if ($sortBy !== $name)
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                 stroke="currentColor" class="ml-1 w-6 h-6">
