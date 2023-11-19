@@ -1,10 +1,10 @@
 @php
     // The pages to active the navbar option
-    $adminRoutes = ['list.user'];
+    $adminRoutes = ['list.user', 'edit.user', 'create.user'];
 @endphp
 
 <!-- Direct option -->
-<x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
+<x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
     {{ __('Dashboard') }}
 </x-nav-link>
 

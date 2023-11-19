@@ -15,15 +15,14 @@ return new class extends Migration
             // Required
             $table->id();
             $table->timestamps();
-            $table->string('name');
+            $table->string('name', 50);
             $table->rememberToken();
             $table->string('password');
-            $table->string('email')->unique();
+            $table->string('email', 100)->unique();
             $table->tinyInteger('level')->nullable();
-            $table->string('username')->unique();
+            $table->string('username', 30)->unique();
 
             // Optional
-            $table->string('lastip')->nullable();
             $table->boolean('admin')->nullable();
             $table->timestamp('email_verified_at')->nullable();
         });

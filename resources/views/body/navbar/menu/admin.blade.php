@@ -20,7 +20,7 @@
     </x-multiple-dropdown-nav> 
     --}}
 
-    <x-dropdown-link :href="route('list.user')" :active="request()->routeIs('list.user')" wire:navigate>
+    <x-dropdown-link :href="route('list.user')" :active="request()->routeIs('list.user')">
         <div class="flex items-center">
             <x-fas-users class="w-6 h-6 mr-2" />
             <div class="flex items-center w-full justify-between">

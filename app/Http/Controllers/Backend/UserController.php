@@ -6,28 +6,31 @@ use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
+use App\Http\Utils\Enums\AlertType;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\View\View;
 
 class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): View
     {
         $this->authorize('viewAny', Auth::user());
 
-        return view('backend.user.list_user')->with('alerts', $this->getAlerts());
+        return view('backend.user.list')->with('alerts', $this->getAlerts());
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {
         $this->authorize('create', Auth::user());
 
-        return view('backend.user.create_user')->with('alerts', $this->getAlerts());
+        return view('backend.user.create')->with('alerts', $this->getAlerts());
     }
 
     /**
@@ -37,37 +40,63 @@ class UserController extends Controller
     {
         $this->authorize('create', Auth::user());
 
-        return redirect()->route('edit.item')->with('alerts', $this->getAlerts());
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'username' => $request->username,
+            'admin' => $request->is_admin,
+            'password' => Hash::make($request->password)
+        ]);
+
+        $this->addAlert(AlertType::Success, ':model-insert-success', ['model' => __('user')]);
+
+        return redirect()->route('edit.user', $user->id)->with('alerts', $this->getAlerts());
     }
 
     /**
      * Display the specified resource.
      */
-    public function show()
+    public function show($id): View
     {
         $this->authorize('view', Auth::user());
 
-        return view('backend.user.show_user')->with('alerts', $this->getAlerts());
+        $user = User::findOrFail($id);
+
+        return view('backend.user.show', compact('user'))->with('alerts', $this->getAlerts());
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit()
+    public function edit($id): View
     {
         $this->authorize('update', Auth::user());
 
-        return view('backend.user.edit_user')->with('alerts', $this->getAlerts());
+        $user = User::findOrFail($id);
+
+        return view('backend.user.edit', compact('user'))->with('alerts', $this->getAlerts());
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateUserRequest $request, User $user)
+    public function update(UpdateUserRequest $request)
     {
         $this->authorize('update', Auth::user());
 
-        return redirect()->route('edit.item')->with('alerts', $this->getAlerts());
+        $user = User::findOrFail($request->id);
+
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'username' => $request->username,
+            'admin' => $request->is_admin,
+            'password' => empty($request->password) ? $user->password : Hash::make($request->password)
+        ]);
+
+        $this->addAlert(AlertType::Success, ':model-update-success', ['model' => __('user')]);
+
+        return redirect()->route('edit.user', $request->id)->with('alerts', $this->getAlerts());
     }
 
     /**
@@ -77,6 +106,6 @@ class UserController extends Controller
     {
         $this->authorize('delete', Auth::user());
 
-        return redirect()->route('edit.item')->with('alerts', $this->getAlerts());
+        return redirect()->route('list.user')->with('alerts', $this->getAlerts());
     }
 }
