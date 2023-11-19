@@ -36,6 +36,6 @@ trait Alerts
 
     public function getAlerts(): array
     {
-        return $this->alerts;
+        return session('alerts', $this->alerts);
     }
 }
