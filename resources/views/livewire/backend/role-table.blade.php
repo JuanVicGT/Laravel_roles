@@ -15,11 +15,6 @@
                         @include('livewire.datatable.components.table-action-buttons')
                     </div>
                 </div>
-
-                <!-- Filters -->
-                <div x-data="{ ghost: false }" x-show="expanded" class="w-full py-2.5 space-y-2">
-                    @include('livewire.backend.datatable_filters.user-table-filters')
-                </div>
             </section>
 
             <!-- Table -->
@@ -34,10 +29,6 @@
                                     'displayName' => 'Name',
                                 ])
                                 @include('livewire.datatable.components.table-sortable-th', [
-                                    'name' => 'email',
-                                    'displayName' => 'Email',
-                                ])
-                                @include('livewire.datatable.components.table-sortable-th', [
                                     'name' => 'updated_at',
                                     'displayName' => 'Last Update',
                                 ])
@@ -47,16 +38,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($users as $user)
-                                <tr wire:key="{{ $user->id }}"
+                            @foreach ($roles as $role)
+                                <tr wire:key="{{ $role->id }}"
                                     class="border-b dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600">
                                     <th scope="row" class="px-4 py-3 font-medium whitespace-nowrap">
-                                        {{ $user->name }}</th>
-                                    <td class="px-4 py-3">{{ $user->email }}</td>
-                                    <td class="px-4 py-3">{{ $user->updated_at }}</td>
+                                        {{ $role->name }}</th>
+                                    <td class="px-4 py-3">{{ $role->updated_at }}</td>
                                     <td class="px-4 py-3 flex items-center justify-end">
                                         <div class="flex justify-center pt-4 md:pt-0 space-x-3">
-                                            <a href="{{ route('edit.user', $user->id) }}">
+                                            <a href="{{ route('edit.role', $role->id) }}">
                                                 <x-hover-button
                                                     class="hover:bg-yellow-500 text-yellow-700 dark:text-yellow-500 border-yellow-500">
                                                     <x-fas-pencil class="w-5 h-5" />
@@ -64,15 +54,15 @@
                                             </a>
 
                                             <x-hover-button
-                                                x-on:click="$dispatch('open-modal', 'confirm-user-deletion-{{ $user->id }}');"
+                                                x-on:click="$dispatch('open-modal', 'confirm-role-deletion-{{ $role->id }}');"
                                                 class="hover:bg-red-500 text-red-700 dark:text-red-500 border-red-500">
                                                 <x-fas-trash-can class="w-5 h-5" />
                                             </x-hover-button>
 
                                             <!-- Modals wire:click=\"delete({\{ $user->id }\})\" -->
                                             @include('livewire.datatable.components.table-delete-modal', [
-                                                'id' => $user->id,
-                                                'model' => 'user',
+                                                'id' => $role->id,
+                                                'model' => 'role',
                                                 'title' => 'Are you sure you want to delete?',
                                                 'description' => 'Once deleted, it cannot be reversed.',
                                             ])
@@ -101,7 +91,7 @@
                         </select>
                     </div>
                     <div class="w-full">
-                        {{ $users->links('livewire.datatable.components.pagination-links') }}
+                        {{ $roles->links('livewire.datatable.components.pagination-links') }}
                     </div>
                 </div>
             </section>

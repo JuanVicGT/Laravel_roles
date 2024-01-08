@@ -50,7 +50,7 @@
         </div>
 
         <div class="w-full md:pr-6 md:pl-2">
-
+            <livewire:backend.role-table />
         </div>
     </div>
 </x-app-layout>

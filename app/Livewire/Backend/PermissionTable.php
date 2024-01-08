@@ -2,18 +2,18 @@
 
 namespace App\Livewire\Backend;
 
-use App\Models\User;
 use Livewire\Component;
+use App\Models\Permission;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Auth;
 
-class UserTable extends Component
+class PermissionTable extends Component
 {
     use WithPagination;
 
     #[Url(history: true)]
-    public $sortBy = 'created_at';
+    public $sortBy = 'name';
 
     #[Url(history: true)]
     public $sortDir = 'DESC';
@@ -22,7 +22,6 @@ class UserTable extends Component
 
     // Filters
     public $search = '';
-    public $filter_start_date = '';
 
     public function updatedSearch()
     {
@@ -34,11 +33,11 @@ class UserTable extends Component
         $this->resetPage();
     }
 
-    public function delete(User $user)
+    public function delete(Permission $permission)
     {
         $this->authorize('delete', Auth::user());
 
-        $user->delete();
+        $permission->delete();
     }
 
     public function setSortBy($sortByField)
@@ -54,21 +53,15 @@ class UserTable extends Component
 
     public function render(): mixed
     {
-        $users = User::when(
+        $permissions = Permission::when(
             $this->search,
 
             fn ($query) =>
             $query->where('name', 'like', "%{$this->search}%")
-                ->orWhere('email', 'like', "%{$this->search}%")
-        )->when(
-            $this->filter_start_date,
-
-            fn ($query) =>
-            $query->where('updated_at', '>', "{$this->filter_start_date}")
         )
             ->orderBy($this->sortBy, $this->sortDir)
             ->paginate($this->perPage);
 
-        return view('livewire.backend.user-table', ['users' => $users]);
+        return view('livewire.backend.permission-table', ['permissions' => $permissions]);
     }
 }
