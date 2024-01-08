@@ -33,13 +33,6 @@
                     </li>
                 </ol>
             </div>
-            <a href="{{ route('create.permission') }}" class="inline">
-                <x-custom-primary-button
-                    class="h-8 text-white bg-green-700 dark:bg-green-700 hover:bg-green-600 dark:hover:bg-green-600 focus:bg-green-600 dark:focus:bg-green-600 active:bg-green-600 dark:active:bg-green-600">
-                    <x-fas-plus class="w-4 h-4 mr-2.5" />
-                    {{ __('add-new') }}
-                </x-custom-primary-button>
-            </a>
         </div>
     </section>
 
@@ -50,7 +43,7 @@
         </div>
 
         <div class="w-full md:pr-6 md:pl-2">
-
+            <livewire:backend.permission-table />
         </div>
     </div>
 </x-app-layout>
