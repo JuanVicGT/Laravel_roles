@@ -16,7 +16,7 @@
 
     <!-- Header  -->
     <section class="pt-12">
-        <div class="w-full px-6 flex justify-between justify-items-center">
+        <div class="w-full px-4 flex justify-between justify-items-center">
             <div class="inline-flex">
                 <ol class="flex h-8 overflow-hidden space-x-2 rounded-lg">
                     <li class="flex items-center">
@@ -43,7 +43,7 @@
         </div>
 
         <div class="w-full md:pr-6 md:pl-2">
-            <livewire:backend.permission-table />
+            <livewire:backend.permission_table />
         </div>
     </div>
 </x-app-layout>
