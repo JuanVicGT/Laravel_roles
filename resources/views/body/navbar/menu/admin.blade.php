@@ -16,11 +16,11 @@
     {{--     
     <!-- Admin settings -->
     <x-multiple-dropdown-nav :active="request()->routeIs('profile.edit')">
-        @include('body.navbar.submenu.admin_user')
+        @include('body.navbar.submenu.demo')
     </x-multiple-dropdown-nav> 
     --}}
 
-    <x-dropdown-link :href="route('list.user')" :active="request()->routeIs('list.user')">
+    <x-dropdown-link :href="route('list.user')">
         <div class="flex items-center">
             <x-fas-users class="w-6 h-6 mr-2" />
             <div class="flex items-center w-full justify-between">

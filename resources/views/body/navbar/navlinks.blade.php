@@ -1,6 +1,10 @@
 @php
     // The pages to active the navbar option
-    $adminRoutes = ['list.user', 'edit.user', 'create.user'];
+    $userRoutes = ['list.user', 'edit.user', 'create.user'];
+    $roleRoutes = ['list.role', 'edit.role', 'create.role'];
+    $permissionRoutes = ['list.permission', 'edit.permission', 'create.permission'];
+
+    $adminRoutes = [...$userRoutes, ...$roleRoutes, ...$permissionRoutes];
 @endphp
 
 <!-- Direct option -->

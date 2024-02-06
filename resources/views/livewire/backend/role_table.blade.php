@@ -6,8 +6,8 @@
             <section class="w-full p-4">
                 <div class="md:flex items-center justify-between">
                     <div class="block md:flex w-full pr-4">
-                        <x-text-input id="search" class="block w-full" type="text" name="search"
-                            placeholder="{{ __('Search') }}" wire:model="search" />
+                        <x-text-input id="search" class="block w-full" type="text" name="search" autofocus
+                            placeholder="{{ __('Search') }}" wire:model="search" wire:keydown.enter="$refresh" />
                     </div>
 
                     <!-- Action Buttons (include filter button) -->
