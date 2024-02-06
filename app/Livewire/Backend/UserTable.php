@@ -69,6 +69,6 @@ class UserTable extends Component
             ->orderBy($this->sortBy, $this->sortDir)
             ->paginate($this->perPage);
 
-        return view('livewire.backend.user-table', ['users' => $users]);
+        return view('livewire.backend.user_table', ['users' => $users]);
     }
 }
