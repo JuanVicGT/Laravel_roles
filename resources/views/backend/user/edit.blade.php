@@ -16,7 +16,7 @@
 
     <!-- Header  -->
     <section class="pt-12">
-        <div class="w-full px-6 md:flex justify-center md:justify-between justify-items-center">
+        <div class="w-full px-4 md:flex justify-center md:justify-between justify-items-center">
             <div class="flex w-full justify-center md:justify-start md:w-1/2">
                 <ol class="flex h-8 overflow-hidden space-x-2 rounded-lg">
                     <li class="flex items-center">
@@ -50,7 +50,7 @@
     </section>
 
     <!-- Content -->
-    <section class="w-full md:px-6 py-4">
+    <section class="w-full md:px-4 py-4">
         <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
             <form method="post" action="{{ route('update.user') }}" class="px-4 pb-6 space-y-6">
                 @csrf
