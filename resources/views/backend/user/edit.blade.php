@@ -33,7 +33,7 @@
                     </li>
 
                     <li class="relative flex items-center">
-                        <x-routenav href="{{ route('create.user', $user->id) }}"
+                        <x-routenav href="{{ route('create.user') }}"
                             class="text-white bg-green-700 dark:bg-green-700 hover:bg-green-600 dark:hover:bg-green-600">
                             <x-fas-plus class="w-4 h-4" />
                             <span class="ms-1">{{ __('add-new') }}</span>
