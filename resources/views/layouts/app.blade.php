@@ -16,10 +16,10 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="font-sans antialiased bg-gray-100 md:overflow-scroll dark:bg-gray-900" x-data="{ open_nav: false, scrolledFromTop: false }"
+<body class="font-sans antialiased bg-gray-100 md:overflow-auto dark:bg-gray-900" x-data="{ open_nav: false, scrolledFromTop: false }"
     class="{
         'overflow-hidden': open_nav,
-        'overflow-scroll': !open_nav
+        'overflow-auto': !open_nav
     }">
     <!-- Page Heading -->
     <header class="fixed w-full z-30 h-fit flex border-b border-gray-100 dark:border-gray-700"

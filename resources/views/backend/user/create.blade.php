@@ -16,7 +16,7 @@
 
     <!-- Header  -->
     <section class="pt-12">
-        <div class="w-full mx-auto px-6 flex justify-between justify-items-center">
+        <div class="w-full mx-auto px-4 flex justify-between justify-items-center">
             <div class="inline-flex">
                 <ol class="flex h-8 overflow-hidden space-x-2 rounded-lg">
                     <li class="flex items-center">
@@ -42,7 +42,7 @@
     </section>
 
     <!-- Content -->
-    <section class="w-full md:px-6 py-4">
+    <section class="w-full md:px-4 py-4">
         <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
             <form method="post" action="{{ route('store.user') }}" class="px-4 pb-6 space-y-6">
                 @csrf
