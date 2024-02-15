@@ -83,5 +83,67 @@
                 </div>
             </form>
         </div>
+
+        <div class="flex w-full py-6 justify-end items-center dark:text-white">
+            <x-fas-users class="w-5 h-5" />
+            <span class="ms-1 font-medium">{{ __('permissions') }}</span>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+            <!-- TW Elements is free under AGPL, with commercial license required for specific uses. See more details: https://tw-elements.com/license/ and contact us for queries at tailwind@mdbootstrap.com -->
+            <div class="flex flex-col">
+                <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+                    <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+                        <div class="overflow-hidden">
+                            <table class="min-w-full text-left text-sm font-light">
+                                <thead class="border-b font-medium dark:border-neutral-500">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-4">{{ __('name') }}</th>
+                                        <th scope="col" class="px-6 py-4">{{ __('list') }}</th>
+                                        <th scope="col" class="px-6 py-4">{{ __('view') }}</th>
+                                        <th scope="col" class="px-6 py-4">{{ __('create') }}</th>
+                                        <th scope="col" class="px-6 py-4">{{ __('update') }}</th>
+                                        <th scope="col" class="px-6 py-4">{{ __('delete') }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($permissions as $permission)
+                                        <tr class="border-b dark:border-neutral-500">
+                                            <td class="whitespace-nowrap px-6 py-4 font-medium">{{ $permission->name }}
+                                            </td>
+                                            <td class="whitespace-nowrap px-6 py-4 justify-center">
+                                                <x-text-input id="is_admin" name="list" type="checkbox"
+                                                    value="1" :custom_text="'text-blue-600 dark:text-blue-600'"
+                                                    class="bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600" />
+                                            </td>
+                                            <td class="whitespace-nowrap px-6 py-4 justify-center">
+                                                <x-text-input id="is_admin" name="list" type="checkbox"
+                                                    value="1" :custom_text="'text-blue-600 dark:text-blue-600'"
+                                                    class="bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600" />
+                                            </td>
+                                            <td class="whitespace-nowrap px-6 py-4 justify-center">
+                                                <x-text-input id="is_admin" name="list" type="checkbox"
+                                                    value="1" :custom_text="'text-blue-600 dark:text-blue-600'"
+                                                    class="bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600" />
+                                            </td>
+                                            <td class="whitespace-nowrap px-6 py-4 justify-center">
+                                                <x-text-input id="is_admin" name="list" type="checkbox"
+                                                    value="1" :custom_text="'text-blue-600 dark:text-blue-600'"
+                                                    class="bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600" />
+                                            </td>
+                                            <td class="whitespace-nowrap px-6 py-4 justify-center">
+                                                <x-text-input id="is_admin" name="list" type="checkbox"
+                                                    value="1" :custom_text="'text-blue-600 dark:text-blue-600'"
+                                                    class="bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600" />
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
     </section>
 </x-app-layout>
