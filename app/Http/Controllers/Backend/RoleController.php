@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Role\StoreRoleRequest;
 use App\Http\Requests\Role\UpdateRoleRequest;
 use App\Http\Utils\Enums\AlertType;
+use App\Models\Permission;
 use Illuminate\Support\Facades\Auth;
 
 class RoleController extends Controller
@@ -68,8 +69,9 @@ class RoleController extends Controller
         $this->authorize('update', Auth::user());
 
         $role = Role::findOrFail($id);
+        $permissions = Permission::all();
 
-        return view('backend.role.edit', compact('role'))->with('alerts', $this->getAlerts());
+        return view('backend.role.edit', compact('role', 'permissions'))->with('alerts', $this->getAlerts());
     }
 
     /**
