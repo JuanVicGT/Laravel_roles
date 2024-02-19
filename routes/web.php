@@ -55,6 +55,9 @@ Route::middleware('auth')->group(function () {
         Route::post('/role', 'store')->name('store.role');
         Route::patch('/role', 'update')->name('update.role');
         Route::delete('/role', 'delete')->name('delete.role');
+
+        // Custom Actions
+        Route::post('/assign/permission', 'assignPermissions')->name('assign.permission');
     });
 
     /** ========== Permission section  ========== */

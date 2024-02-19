@@ -8,7 +8,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Role\StoreRoleRequest;
 use App\Http\Requests\Role\UpdateRoleRequest;
 use App\Http\Utils\Enums\AlertType;
-use App\Models\Permission;
+use App\Http\Utils\PermissionTools;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class RoleController extends Controller
@@ -69,9 +70,9 @@ class RoleController extends Controller
         $this->authorize('update', Auth::user());
 
         $role = Role::findOrFail($id);
-        $permissions = Permission::all();
+        $permissionModels = PermissionTools::PERMISSION_MODELS;
 
-        return view('backend.role.edit', compact('role', 'permissions'))->with('alerts', $this->getAlerts());
+        return view('backend.role.edit', compact('role', 'permissionModels'))->with('alerts', $this->getAlerts());
     }
 
     /**
@@ -100,5 +101,28 @@ class RoleController extends Controller
         $this->authorize('delete', Auth::user());
 
         return redirect()->route('list.role')->with('alerts', $this->getAlerts());
+    }
+
+    public function assignPermissions(Request $request)
+    {
+        $this->authorize('update', Auth::user());
+
+        $permissions = [];
+
+        foreach (PermissionTools::PERMISSION_MODELS as $model) {
+            foreach (PermissionTools::PERMISSION_ACTIONS as $action) {
+                $permission = "{$action}_{$model}";
+
+                if ($request->$permission)
+                    $permissions[] = "{$action}_{$model}";
+            }
+        }
+
+        $role = Role::findOrFail($request->id);
+        $role->syncPermissions($permissions);
+
+        $this->addAlert(AlertType::Success, ':model-update-success', ['model' => __('role')]);
+
+        return redirect()->route('edit.role', $request->id)->with('alerts', $this->getAlerts());
     }
 }

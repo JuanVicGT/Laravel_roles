@@ -38,8 +38,8 @@
                             @foreach ($permissions as $permission)
                                 <tr wire:key="{{ $permission->id }}"
                                     class="border-b dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600">
-                                    <th scope="row" class="px-4 py-3 font-medium whitespace-nowrap">
-                                        {{ $permission->name }}</th>
+                                    <td scope="row" class="px-4 py-3 font-medium whitespace-nowrap">
+                                        {{ $permission->name }}</td>
                                     <td class="px-4 py-3">{{ $permission->updated_at }}</td>
                                 </tr>
                             @endforeach
