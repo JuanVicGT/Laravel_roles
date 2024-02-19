@@ -55,4 +55,19 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    /**
+     * @param string menu Menu that you want to check if the user has permission to access.
+     * 
+     * @return bool
+     */
+    public function hasMenuPermissionTo($menu): bool
+    {
+        foreach ($this->getAllPermissions() as $permission) {
+            if ($permission->menu === $menu)
+                return true;
+        }
+
+        return false;
+    }
 }

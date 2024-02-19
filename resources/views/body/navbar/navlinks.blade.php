@@ -13,7 +13,7 @@
 </x-nav-link>
 
 <!-- Admin Menú -->
-@if (auth()->user()->can('view_menu_admin') || auth()->user()->admin)
+@if (auth()->user()->hasMenuPermissionTo('admin') || auth()->user()->admin)
     <x-dropdown-nav align="left" width="48" :active="request()->routeIs($adminRoutes)">
         @include('body.navbar.menu.admin')
     </x-dropdown-nav>

@@ -12,7 +12,7 @@
 <div x-data="{ open: true }" x-cloak x-show="open" x-transition:enter="transition ease-out delay-1000 duration-300"
     x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
     x-transition:leave="transition ease-in duration-100" x-transition:leave-start="opacity-100"
-    x-transition:leave-end="opacity-0" class="pt-12 md:px-6 -mb-8">
+    x-transition:leave-end="opacity-0" class="pt-12 md:px-4 -mb-8">
     <div class="w-full relative flex px-4 py-3 rounded-lg {{ $alertClass[$variant] }}" role="alert">
         <div class="flex-shrink-0 mr-4">
             @if ($variant == 'info')

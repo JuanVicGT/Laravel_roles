@@ -17,24 +17,9 @@ class PermissionSeeder extends Seeder
         $this->createAllPermissions();
     }
 
-    /**
-     * The function getAllMenus returns an array containing the nav options.
-     * 
-     * @return array
-     */
-    private function getAllMenus(): array
+    private function getMenuWithModels(): array
     {
-        return ['admin'];
-    }
-
-    /**
-     * The function getAllModels returns an array containing the models.
-     * 
-     * @return array
-     */
-    private function getAllModels(): array
-    {
-        return ['user'];
+        return ['admin' => ['user', 'role', 'permission']];
     }
 
     /**
@@ -49,18 +34,18 @@ class PermissionSeeder extends Seeder
 
     private function createAllPermissions()
     {
-        /// Nav menu
-        foreach ($this->getAllMenus() as $menu) {
-            $permissionPath = "menu_{$menu}";
-            Permission::create(['name' => $permissionPath]);
-        }
-
-        /// Models permissions
-        foreach ($this->getAllModels() as $model) {
-            foreach ($this->getAllPermissions() as $permission) {
-                $permissionPath = "{$permission}_{$model}";
-                Permission::create(['name' => $permissionPath]);
+        /// Nav menu how key and the model how value
+        foreach ($this->getMenuWithModels() as $menu => $models) {
+            foreach ($models as $model) {
+                $this->createPermission($model, $menu);
             }
+        }
+    }
+
+    private function createPermission($model, $menu)
+    {
+        foreach ($this->getAllPermissions() as $permission) {
+            Permission::create(['name' => "{$permission}_{$model}", 'menu' => $menu]);
         }
     }
 }
