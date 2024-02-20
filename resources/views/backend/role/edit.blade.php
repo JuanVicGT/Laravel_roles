@@ -102,7 +102,7 @@
                             <div class="overflow-hidden">
                                 <table class="min-w-full text-left text-sm font-light">
                                     <thead class="border-b font-medium dark:border-neutral-500">
-                                        <tr>
+                                        <tr class="dark:text-white">
                                             <th scope="col" class="px-6 py-4">{{ __('name') }}</th>
                                             <th scope="col" class="px-6 py-4">{{ __('list') }}</th>
                                             <th scope="col" class="px-6 py-4">{{ __('view') }}</th>
@@ -113,7 +113,7 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($permissionModels as $permissionModel)
-                                            <tr class="border-b dark:border-neutral-500">
+                                            <tr class="border-b dark:border-neutral-500 dark:text-white">
                                                 <td class="whitespace-nowrap px-6 py-4 font-medium">
                                                     {{ $permissionModel }}
                                                 </td>

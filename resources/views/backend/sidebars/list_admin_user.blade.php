@@ -7,17 +7,21 @@
                     <span class="ms-3">{{ __('users') }}</span>
                 </x-sidenav-link>
             </li>
-            <li>
-                <x-sidenav-link :active="request()->routeIs('list.role')" :href="route('list.role')">
-                    <x-fas-users class="w-5 h-5" />
-                    <span class="ms-3">{{ __('roles') }}</span>
-                </x-sidenav-link>
-            </li>
-            <li>
-                <x-sidenav-link :active="request()->routeIs('list.permission')" :href="route('list.permission')">
-                    <x-fas-users class="w-5 h-5" />
-                    <span class="ms-3">{{ __('permissions') }}</span>
-                </x-sidenav-link>
-            </li>
+            @if (auth()->user()->hasPermissionTo('list_role') || auth()->user()->admin)
+                <li>
+                    <x-sidenav-link :active="request()->routeIs('list.role')" :href="route('list.role')">
+                        <x-fas-users class="w-5 h-5" />
+                        <span class="ms-3">{{ __('roles') }}</span>
+                    </x-sidenav-link>
+                </li>
+            @endif
+            @if (auth()->user()->hasPermissionTo('list_permission') || auth()->user()->admin)
+                <li>
+                    <x-sidenav-link :active="request()->routeIs('list.permission')" :href="route('list.permission')">
+                        <x-fas-users class="w-5 h-5" />
+                        <span class="ms-3">{{ __('permissions') }}</span>
+                    </x-sidenav-link>
+                </li>
+            @endif
     </div>
 </aside>
