@@ -1,0 +1,24 @@
+@startuml "Base"
+
+entity "User" as user {
+    *id : number <<generated>>
+    --
+    name : text
+}
+
+entity "Role" as role {
+    *id : number <<generated>>
+    --
+    name : text
+}
+
+entity "Permission" as perm {
+    *id : number <<generated>>
+    --
+    name : text
+    guar_name : text
+}
+
+user ||--{ perm
+
+@enduml
