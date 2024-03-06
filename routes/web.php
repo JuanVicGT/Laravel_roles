@@ -32,10 +32,10 @@ Route::middleware('auth')->group(function () {
     /** ========== User section  ========== */
     Route::controller(Backend\UserController::class)->group(function () {
         // Views
-        Route::get('/users', 'index')->name('list.user');
-        Route::get('/user', 'create')->name('create.user');
-        Route::get('/user/{id}', 'edit')->name('edit.user');
-        Route::get('/user/show/{id}', 'show')->name('show.user');
+        Route::get('/ListUser', 'index')->name('list.user');
+        Route::get('/CreateUser', 'create')->name('create.user');
+        Route::get('/EditUser/{id}', 'edit')->name('edit.user');
+        Route::get('/ViewUser/{id}', 'show')->name('show.user');
 
         // Actions
         Route::post('/user', 'store')->name('store.user');
@@ -46,10 +46,10 @@ Route::middleware('auth')->group(function () {
     /** ========== Role section  ========== */
     Route::controller(Backend\RoleController::class)->group(function () {
         // Views
-        Route::get('/roles', 'index')->name('list.role');
-        Route::get('/role', 'create')->name('create.role');
-        Route::get('/role/{id}', 'edit')->name('edit.role');
-        Route::get('/role/show/{id}', 'show')->name('show.role');
+        Route::get('/ListRole', 'index')->name('list.role');
+        Route::get('/CreateRole', 'create')->name('create.role');
+        Route::get('/EditRole/{id}', 'edit')->name('edit.role');
+        Route::get('/ViewRole/{id}', 'show')->name('show.role');
 
         // Actions
         Route::post('/role', 'store')->name('store.role');
@@ -63,10 +63,10 @@ Route::middleware('auth')->group(function () {
     /** ========== Permission section  ========== */
     Route::controller(Backend\PermissionController::class)->group(function () {
         // Views
-        Route::get('/permissions', 'index')->name('list.permission');
-        Route::get('/permission', 'create')->name('create.permission');
-        Route::get('/permission/{id}', 'edit')->name('edit.permission');
-        Route::get('/permission/show/{id}', 'show')->name('show.permission');
+        Route::get('/ListPermission', 'index')->name('list.permission');
+        Route::get('/CreatePermission', 'create')->name('create.permission');
+        Route::get('/EditPermission/{id}', 'edit')->name('edit.permission');
+        Route::get('/ViewPermission/{id}', 'show')->name('show.permission');
 
         // Actions
         Route::post('/permission', 'store')->name('store.permission');

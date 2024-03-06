@@ -33,13 +33,11 @@
                     </li>
 
                     <li class="relative flex items-center">
-                        <a href="{{ route('create.role') }}" class="inline">
-                            <x-custom-primary-button
-                                class="h-8 text-white bg-green-700 dark:bg-green-700 hover:bg-green-600 dark:hover:bg-green-600 focus:bg-green-600 dark:focus:bg-green-600 active:bg-green-600 dark:active:bg-green-600">
-                                <x-fas-plus class="w-4 h-4 mr-2.5" />
-                                {{ __('add-new') }}
-                            </x-custom-primary-button>
-                        </a>
+                        <x-routenav-without-color href="{{ route('create.role') }}"
+                            class="text-white bg-green-700 dark:bg-green-700 hover:bg-green-600 dark:hover:bg-green-600">
+                            <x-fas-plus class="w-4 h-4" />
+                            <span class="ms-1">{{ __('add-new') }}</span>
+                        </x-routenav-without-color>
                     </li>
                 </ol>
             </div>

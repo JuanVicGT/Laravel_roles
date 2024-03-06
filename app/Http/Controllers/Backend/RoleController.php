@@ -21,7 +21,7 @@ class RoleController extends Controller
     {
         $this->authorize('viewAny', Auth::user());
 
-        return view('backend.role.list')->with('alerts', $this->getAlerts());
+        return view('backend.role.ListRole')->with('alerts', $this->getAlerts());
     }
 
     /**
@@ -31,7 +31,7 @@ class RoleController extends Controller
     {
         $this->authorize('create', Auth::user());
 
-        return view('backend.role.create')->with('alerts', $this->getAlerts());
+        return view('backend.role.CreateRole')->with('alerts', $this->getAlerts());
     }
 
     /**
@@ -59,7 +59,7 @@ class RoleController extends Controller
 
         $role = Role::findOrFail($id);
 
-        return view('backend.role.show', compact('role'))->with('alerts', $this->getAlerts());
+        return view('backend.role.ViewRole', compact('role'))->with('alerts', $this->getAlerts());
     }
 
     /**
@@ -72,7 +72,7 @@ class RoleController extends Controller
         $role = Role::findOrFail($id);
         $permissionModels = PermissionTools::PERMISSION_MODELS;
 
-        return view('backend.role.edit', compact('role', 'permissionModels'))->with('alerts', $this->getAlerts());
+        return view('backend.role.EditRole', compact('role', 'permissionModels'))->with('alerts', $this->getAlerts());
     }
 
     /**

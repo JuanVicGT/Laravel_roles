@@ -20,7 +20,7 @@ class UserController extends Controller
     {
         $this->authorize('viewAny', Auth::user());
 
-        return view('backend.user.list')->with('alerts', $this->getAlerts());
+        return view('backend.user.ListUser')->with('alerts', $this->getAlerts());
     }
 
     /**
@@ -30,7 +30,7 @@ class UserController extends Controller
     {
         $this->authorize('create', Auth::user());
 
-        return view('backend.user.create')->with('alerts', $this->getAlerts());
+        return view('backend.user.CreateUser')->with('alerts', $this->getAlerts());
     }
 
     /**
@@ -62,7 +62,7 @@ class UserController extends Controller
 
         $user = User::findOrFail($id);
 
-        return view('backend.user.show', compact('user'))->with('alerts', $this->getAlerts());
+        return view('backend.user.ViewUser', compact('user'))->with('alerts', $this->getAlerts());
     }
 
     /**
@@ -74,7 +74,7 @@ class UserController extends Controller
 
         $user = User::findOrFail($id);
 
-        return view('backend.user.edit', compact('user'))->with('alerts', $this->getAlerts());
+        return view('backend.user.EditUser', compact('user'))->with('alerts', $this->getAlerts());
     }
 
     /**

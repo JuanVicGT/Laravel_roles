@@ -19,7 +19,7 @@ class PermissionController extends Controller
     {
         $this->authorize('viewAny', Auth::user());
 
-        return view('backend.permission.list')->with('alerts', $this->getAlerts());
+        return view('backend.permission.ListPermission')->with('alerts', $this->getAlerts());
     }
 
     /**
@@ -29,7 +29,7 @@ class PermissionController extends Controller
     {
         $this->authorize('create', Auth::user());
 
-        return view('backend.permission.create')->with('alerts', $this->getAlerts());
+        return view('backend.permission.CreatePermission')->with('alerts', $this->getAlerts());
     }
 
     /**
@@ -57,7 +57,7 @@ class PermissionController extends Controller
 
         $permission = Permission::findOrFail($id);
 
-        return view('backend.permission.show', compact('permission'))->with('alerts', $this->getAlerts());
+        return view('backend.permission.ViewPermission', compact('permission'))->with('alerts', $this->getAlerts());
     }
 
     /**
@@ -69,7 +69,7 @@ class PermissionController extends Controller
 
         $permission = Permission::findOrFail($id);
 
-        return view('backend.permission.edit', compact('permission'))->with('alerts', $this->getAlerts());
+        return view('backend.permission.EditPermission', compact('permission'))->with('alerts', $this->getAlerts());
     }
 
     /**

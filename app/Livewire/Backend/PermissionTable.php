@@ -62,6 +62,6 @@ class PermissionTable extends Component
             ->orderBy($this->sortBy, $this->sortDir)
             ->paginate($this->perPage);
 
-        return view('livewire.backend.permission_table', ['permissions' => $permissions]);
+        return view('livewire.backend.TablePermission', ['permissions' => $permissions]);
     }
 }
