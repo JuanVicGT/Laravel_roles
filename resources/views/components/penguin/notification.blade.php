@@ -1,7 +1,7 @@
 <!-- Notifications -->
 <div x-data="{
     notifications: [],
-    displayDuration: 8000,
+    displayDuration: 5000,
     soundEffect: false,
 
     addNotification({ variant = 'info', sender = null, title = null, message = null }) {

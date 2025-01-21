@@ -6,40 +6,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>@yield('tab-title', config('app.name', __('New Instance')))</title>
+
+    @if (file_exists(public_path('assets/images/favicon.ico')))
+        <link rel="icon" type="image/x-icon" href="{{ asset('assets/images/favicon.ico') }}">
+    @endif
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-    <!-- Livewire styles -->
-    @livewireStyles
-
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <!-- Livewire styles -->
+    @livewireStyles
 </head>
 
-<body class="font-sans antialiased" x-data="{ notifications: [] }">
+{{-- La variable notifications es para usar el componente de Penguin UI --}}
+
+<body class="min-h-screen font-sans antialiased bg-base-200/50 dark:bg-base-200" x-data>
     <x-penguin-notification />
 
-    <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
-        @include('layouts.navigation')
+    @php
+        $layout = auth()->user()->theme_layout ?? 'both';
+        $layoutPath = resource_path('views/layouts/themes/' . $layout . '.blade.php');
+    @endphp
 
-        <!-- Page Heading -->
-        @isset($header)
-            <header class="bg-white dark:bg-gray-800 shadow">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    {{ $header }}
-                </div>
-            </header>
-        @endisset
+    @if (file_exists($layoutPath))
+        @include('layouts.themes.' . $layout)
+    @else
+        @include('layouts.themes.' . 'default')
+    @endif
 
-        <!-- Page Content -->
-        <main>
-            {{ $slot }}
-        </main>
-    </div>
+    {{-- Theme toggle --}}
+    <x-mary-theme-toggle class="hidden" />
 
+    <!-- Livewire scripts -->
     @livewireScripts
 </body>
 
