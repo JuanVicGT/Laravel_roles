@@ -2,7 +2,7 @@
     <x-mary-nav sticky class="lg:hidden">
         <x-slot:brand>
             <div class="ml-5 pt-5">
-                <span class="text-center mt-2">{{ config('app.name', __('New Instance')) }}</span>
+                <span class="text-center mt-2">{{ config('app.layout_name', __('New Instance')) }}</span>
             </div>
         </x-slot:brand>
         <x-slot:actions>
@@ -23,7 +23,7 @@
                     <a href="{{ route('dashboard') }}">
                         <x-application-logo class="w-24 object-contain fill-current text-gray-800 dark:text-gray-200" />
                     </a>
-                    <span class="text-center mt-2">{{ config('app.name', __('New Instance')) }}</span>
+                    <span class="text-center mt-2">{{ config('app.layout_name', __('New Instance')) }}</span>
                 </div>
             </div>
 
@@ -53,8 +53,8 @@
 
                     {{-- Avatar, Name and Work_position --}}
                     <div class="mary-hideable">
-                        <x-mary-list-item :item="$user" value="name" sub-value="email" no-separator
-                            no-hover class="-mx-2 !-my-2 rounded" link="{{ route('profile.edit') }}">
+                        <x-mary-list-item :item="$user" value="name" sub-value="email" no-separator no-hover
+                            class="-mx-2 !-my-2 rounded" link="{{ route('profile.edit') }}">
                             <x-slot:avatar>
                                 @if ($user->avatar)
                                     <x-mary-avatar image="{{ asset('storage/' . $user->avatar) }}" class="!w-10" />

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('tab-title', config('app.name', __('New Instance')))</title>
+    <title>@yield('tab-title', config('app.layout_name', __('New Instance')))</title>
 
     @if (file_exists(public_path('assets/images/favicon.ico')))
         <link rel="icon" type="image/x-icon" href="{{ asset('assets/images/favicon.ico') }}">

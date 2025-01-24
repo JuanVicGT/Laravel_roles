@@ -8,9 +8,11 @@
         </label>
 
         {{-- Brand --}}
-        <a href="{{ route('dashboard') }}">
-            <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
-        </a>
+        <div>
+            <a href="{{ route('dashboard') }}">
+                {{ config('app.layout_name', __('New Instance')) }}
+            </a>
+        </div>
     </x-slot:brand>
 
     {{-- Right side actions --}}
@@ -27,7 +29,7 @@
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
                             <button
-                                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
+                                class="py-2 -my-2 inline-flex items-center px-3 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
                                 <div>{{ Auth::user()->name }}</div>
                                 <div class="ml-1">
                                     <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
@@ -65,6 +67,17 @@
     {{-- SIDEBAR --}}
     <x-slot:sidebar drawer="main-drawer" collapsible class="bg-base-100 lg:bg-inherit">
 
+        {{-- BRAND --}}
+        <div class="mary-hideable">
+            <div class="pt-5 grid place-items-center w-full">
+                <a href="{{ route('dashboard') }}">
+                    <x-application-logo class="w-24 object-contain fill-current text-gray-800 dark:text-gray-200" />
+                </a>
+            </div>
+
+            <x-mary-menu-separator />
+        </div>
+
         {{-- MENU --}}
         <x-mary-menu activate-by-route>
 
@@ -82,8 +95,6 @@
                         </form>
                     </x-slot:actions>
                 </x-mary-list-item>
-
-                <x-mary-menu-separator class="lg:hidden" />
             @endif
 
             <x-mary-menu-item title="Hello" icon="o-sparkles" link="/" />
