@@ -7,21 +7,22 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Str;
 
-class AppServiceProvider extends ServiceProvider
-{
+use App\Services\AppSettingService;
+
+class AppServiceProvider extends ServiceProvider {
     /**
      * Register any application services.
      */
-    public function register(): void
-    {
-        //
+    public function register(): void {
+        $this->app->singleton(AppSettingService::class, function ($app) {
+            return new AppSettingService();
+        });
     }
 
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
-    {
+    public function boot(): void {
         // Ruta base de los componentes
         $componentBasePath = resource_path('views/components/penguin');
 

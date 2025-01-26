@@ -2,7 +2,13 @@
 
 namespace App\Http\Controllers;
 
-abstract class Controller
-{
-    //
+// Gestión de configuraciones
+use App\Services\AppSettingService;
+
+abstract class Controller {
+    public AppSettingService $appSetting;
+
+    public function __construct() {
+        $this->appSetting = app(AppSettingService::class);
+    }
 }
