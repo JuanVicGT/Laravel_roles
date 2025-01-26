@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
+@php
+    $appService = app(App\Services\AppSettingService::class);
+@endphp
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,7 +18,7 @@
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet"/>
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -26,24 +30,24 @@
 {{-- La variable notifications es para usar el componente de Penguin UI --}}
 
 <body class="min-h-screen font-sans antialiased bg-base-200/50 dark:bg-base-200" x-data>
-    <x-penguin-notification />
+<x-penguin-notification/>
 
-    @php
-        $layout = auth()->user()->theme_layout ?? 'both';
-        $layoutPath = resource_path('views/layouts/themes/' . $layout . '.blade.php');
-    @endphp
+@php
+    $layout = auth()->user()->type_layout ?? $appService->get('general', 'type_layout', 'both');
+    $layoutPath = resource_path('views/layouts/themes/' . $layout . '.blade.php');
+@endphp
 
-    @if (file_exists($layoutPath))
-        @include('layouts.themes.' . $layout)
-    @else
-        @include('layouts.themes.' . 'default')
-    @endif
+@if (file_exists($layoutPath))
+    @include('layouts.themes.' . $layout)
+@else
+    @include('layouts.themes.' . 'default')
+@endif
 
-    {{-- Theme toggle --}}
-    <x-mary-theme-toggle class="hidden" />
+{{-- Theme toggle --}}
+<x-mary-theme-toggle class="hidden"/>
 
-    <!-- Livewire scripts -->
-    @livewireScripts
+<!-- Livewire scripts -->
+@livewireScripts
 </body>
 
 </html>
