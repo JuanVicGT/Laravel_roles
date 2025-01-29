@@ -1,0 +1,7 @@
+{
+    "id": "Core",
+    "priority": 1,
+    "title": "Core",
+    "description": "Core del sistema",
+    "version": "1.0.0"
+}

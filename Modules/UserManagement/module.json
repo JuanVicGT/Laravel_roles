@@ -1,0 +1,7 @@
+{
+    "id": "UserManagement",
+    "priority": 2,
+    "title": "User Management",
+    "description": "Modulo para la gestión de usuarios",
+    "version": "1.0.0"
+}

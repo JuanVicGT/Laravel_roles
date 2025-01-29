@@ -15,6 +15,7 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
     'layout_name' => env('APP_LAYOUT_NAME', 'New Instance'),
+    'instance' => env('APP_INSTANCE_NAME', 'new_instance'), // Alias
 
     /*
     |--------------------------------------------------------------------------
@@ -40,7 +41,7 @@ return [
     |
     */
 
-    'debug' => (bool) env('APP_DEBUG', false),
+    'debug' => (bool)env('APP_DEBUG', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -124,4 +125,9 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'providers' => \Illuminate\Support\ServiceProvider::defaultProviders()->merge([
+        App\Providers\AppServiceProvider::class,
+        App\Providers\VoltServiceProvider::class,
+        App\Providers\ModulesServiceProvider::class
+    ])->toArray(),
 ];
