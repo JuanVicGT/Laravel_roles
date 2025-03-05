@@ -1,3 +1,38 @@
+@php
+    // Se procesan los menús y submenús con sus respectivas rutas para cargarlos dinamicamente
+    $menu = [];
+    $sub_menus = [];
+
+    $modules_pages = collect(glob(base_path('Modules/*/pages.json')))
+        ->mapWithKeys(function ($path) {
+            $module = json_decode(file_get_contents($path), true);
+            return ['pages' => $module['pages']];
+        })
+        ->sortByDesc('priority')
+        ->toArray();
+
+    $is_admin = auth()->user()->is_admin;
+
+    // Recorrer las rutas para generar el menú
+    foreach ($modules_pages as $pages) {
+        foreach ($pages as $page) {
+            // Verificar permisos
+            if (!$is_admin && !auth()->user()->can($page['permission']) . '.index') {
+                continue;
+            }
+
+            // en el navbar se verifica si hay submenús
+            if ($page['submenu'] !== 'none') {
+                $menu[$page['menu']][$page['submenu']] = ['is_submenu' => true, 'submenu' => $page['submenu']];
+                $sub_menus[$page['submenu']][$page['permission']] = $page;
+                continue;
+            }
+
+            $menu[$page['menu']][$page['permission']] = $page;
+        }
+    }
+@endphp
+
 <div x-data="{ mobileMenuIsOpen: false }" class="sticky top-0 z-10 bg-base-100 dark:bg-gray-900 gap-4 px-8">
     <div class=" navbar w-full">
         <div class="flex-none">
@@ -9,9 +44,19 @@
         <div class="flex-1 pl-4">
             <!-- Navigation Links -->
             <div class="hidden space-x-8 sm:flex">
-                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                    {{ __('Dashboard') }}
-                </x-nav-link>
+                @foreach ($menu as $section => $pages)
+                    @if (count($pages) === 1)
+                        @foreach ($pages as $page)
+                            <x-nav-link :href="route($page['route'])" :active="request()->routeIs('dashboard')">
+                                {{ __($page['title']) }}
+                            </x-nav-link>
+                        @endforeach
+                    @endif
+
+                    @if (count($pages) > 1)
+                        
+                    @endif
+                @endforeach
                 <!-- Add more navigation links here -->
             </div>
         </div>
@@ -143,17 +188,35 @@
 {{-- MAIN --}}
 <x-mary-main full-width>
 
-    {{-- ALERTS --}}
-    @if (session('alerts'))
-        @foreach (session('alerts') as $alert)
-            <x-penguin-alert type="{{ $alert['type'] ?? 'info' }}" title="{{ $alert['title'] ?? '' }}"
-                message="{{ $alert['message'] }}" class="mb-4" />
-        @endforeach
-    @endif
-
     {{-- The `$slot` goes here --}}
     <x-slot:content>
+
+        {{-- ALERTS --}}
+        @if (session('alerts'))
+            @foreach (session('alerts') as $alert)
+                <div class="pb-5">
+                    <x-penguin-alert type="{{ $alert['type'] ?? 'info' }}" title="{{ $alert['title'] ?? '' }}"
+                        message="{{ $alert['message'] }}" />
+                </div>
+            @endforeach
+        @endif
+
+        <!-- Page Heading -->
+        @isset($header)
+            <header class="w-full">
+                {{ $header }}
+            </header>
+        @endisset
+
+        <!-- Page Content -->
         {{ $slot }}
+
+        <!-- Page Footer -->
+        @isset($footer)
+            <footer class="w-full">
+                {{ $footer }}
+            </footer>
+        @endisset
     </x-slot:content>
 </x-mary-main>
 

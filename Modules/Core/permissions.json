@@ -1,0 +1,16 @@
+{
+    "priority": 1,
+    "per_user": [
+        {
+            "name": "is_admin",
+            "type": "checkbox",
+            "label": "Is Admin",
+            "description": "",
+            "default": false,
+            "required": false
+        }
+    ],
+    "per_role": [
+        {}
+    ]
+}

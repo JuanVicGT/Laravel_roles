@@ -1,0 +1,36 @@
+{
+    "priority": 1,
+    "general": {
+        "checkboxes": [],
+        "inputs": [
+            {
+                "name": "decimals",
+                "type": "number",
+                "label": "Decimals",
+                "description": "Number of decimals to use in the system",
+                "default": 2
+            }
+        ],
+        "textareas": [],
+        "selects": [
+            {
+                "name": "currency",
+                "type": "select",
+                "label": "Currency",
+                "description": "Currency used in the system",
+                "default": "GTQ",
+                "translate_options": true,
+                "options": [
+                    {
+                        "label": "GTQ",
+                        "value": "GTQ"
+                    },
+                    {
+                        "label": "USD",
+                        "value": "USD"
+                    }
+                ],
+            }
+        ]
+    }
+}

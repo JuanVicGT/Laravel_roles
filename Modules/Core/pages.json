@@ -1,0 +1,29 @@
+{
+    "priority": 1,
+    "pages": [
+        {
+            "icon": "m-home",
+            "title": "Dashboard",
+            "menu": "Dashboard",
+            "permission": "dashboard",
+            "route": "dashboard",
+            "submenu": "none"
+        },
+        {
+            "icon": "m-user-group",
+            "title": "Users",
+            "menu": "Admin",
+            "permission": "user",
+            "route": "user_managment.index",
+            "submenu": "none"
+        },
+        {
+            "icon": "c-cog-6-tooth",
+            "title": "Settings",
+            "menu": "Admin",
+            "permission": "setting",
+            "route": "setting.index",
+            "submenu": "none"
+        }
+    ]
+}

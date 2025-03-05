@@ -1,0 +1,1 @@
+Estos componentes están basados en los que existen en Mary UI, únicamente se modifican ciertas cuestiones según la comodidad.

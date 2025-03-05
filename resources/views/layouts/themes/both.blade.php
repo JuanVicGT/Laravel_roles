@@ -1,3 +1,31 @@
+@php
+    // Se procesan los menús y submenús con sus respectivas rutas para cargarlos dinamicamente
+    $menu = [];
+
+    $modules_pages = collect(glob(base_path('Modules/*/pages.json')))
+        ->mapWithKeys(function ($path) {
+            $module = json_decode(file_get_contents($path), true);
+            return ['pages' => $module['pages']];
+        })
+        ->sortByDesc('priority')
+        ->toArray();
+
+    $is_admin = auth()->user()->is_admin;
+
+    // Recorrer las rutas para generar el menú
+    foreach ($modules_pages as $pages) {
+        foreach ($pages as $page) {
+            // Verificar permisos
+            if (!$is_admin && !auth()->user()->can($page['permission']) . '.index') {
+                continue;
+            }
+
+            // En el sidebar no se va a verificar si hay submenús, pues se va a mostrar todo en el mismo menú
+            $menu[$page['menu']][$page['permission']] = $page;
+        }
+    }
+@endphp
+
 {{-- The navbar with `sticky` and `full-width` --}}
 <x-mary-nav sticky full-width>
 
@@ -97,16 +125,54 @@
                 </x-mary-list-item>
             @endif
 
-            <x-mary-menu-item title="Hello" icon="o-sparkles" link="/" />
-            <x-mary-menu-sub title="Settings" icon="o-cog-6-tooth">
-                <x-mary-menu-item title="Wifi" icon="o-wifi" link="####" />
-                <x-mary-menu-item title="Archives" icon="o-archive-box" link="####" />
-            </x-mary-menu-sub>
+            @foreach ($menu as $section => $pages)
+                @if (count($pages) === 1)
+                    @foreach ($pages as $page)
+                        <x-mary-menu-item title="{{ __($page['title']) }}" icon="{{ $page['icon'] }}"
+                            link="{{ route($page['route']) }}" no-wire-navigate />
+                    @endforeach
+                @endif
+
+                @if (count($pages) > 1)
+                    <x-mary-menu-sub title="{{ __($section) }}" icon="o-queue-list">
+                        @foreach ($pages as $page)
+                            <x-mary-menu-item title="{{ __($page['title']) }}" icon="{{ $page['icon'] }}"
+                                link="{{ route($page['route']) }}" no-wire-navigate />
+                        @endforeach
+                    </x-mary-menu-sub>
+                @endif
+            @endforeach
         </x-mary-menu>
     </x-slot:sidebar>
 
     {{-- The `$slot` goes here --}}
-    <x-slot:content>
+    <x-slot:content class="lg:px-6">
+
+        {{-- ALERTS --}}
+        @if (session('alerts'))
+            @foreach (session('alerts') as $alert)
+                <div class="pb-5">
+                    <x-penguin-alert type="{{ $alert['type'] ?? 'info' }}" title="{{ $alert['title'] ?? '' }}"
+                        message="{{ $alert['message'] }}" />
+                </div>
+            @endforeach
+        @endif
+
+        <!-- Page Heading -->
+        @isset($header)
+            <header class="w-full">
+                {{ $header }}
+            </header>
+        @endisset
+
+        <!-- Page Content -->
         {{ $slot }}
+
+        <!-- Page Footer -->
+        @isset($footer)
+            <footer class="w-full">
+                {{ $footer }}
+            </footer>
+        @endisset
     </x-slot:content>
 </x-mary-main>
