@@ -32,6 +32,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Rutas personalizadas para el layout
+        Blade::component('layouts.app', 'app-layout');
+        Blade::component('layouts.guest', 'guest-layout');
+
         // Ruta base de los componentes
         $componentBasePath = resource_path('views/components/penguin');
 

@@ -1,0 +1,13 @@
+{
+    "priority": 1,
+    "pages": [
+        {
+            "icon": "m-home",
+            "title": "Dashboard",
+            "menu": "Dashboard2",
+            "permission": "dashboard",
+            "route": "dashboard",
+            "submenu": "none"
+        }
+    ]
+}

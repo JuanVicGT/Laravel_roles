@@ -29,5 +29,9 @@
     "Type Layout": "Tipo de navegación",
     "Default Layout": "Navegación por Defecto",
     "User": "Usuario",
-    "Import": "Importar"
+    "Import": "Importar",
+    "Log In": "Inicio de sesión",
+    "Sign In": "Ingresar",
+    "Profile": "Perfil",
+    "Log Out": "Cerrar Sesión"
 }

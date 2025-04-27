@@ -1,6 +1,6 @@
 @props([
-    'path' => 'assets/images/logo.png',
-    'public_path' => 'assets/images/logo.png',
+    'path' => 'assets/images/logo.svg',
+    'public_path' => 'assets/images/logo.svg',
 ])
 
 @if (file_exists(public_path($public_path)))
