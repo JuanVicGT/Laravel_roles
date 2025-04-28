@@ -11,7 +11,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string update_at
  * @property string created_at
  */
-class AppSetting extends Model {
+class AppSetting extends Model
+{
 
     /**
      * The attributes that are mass assignable.
@@ -22,6 +23,4 @@ class AppSetting extends Model {
         'module',
         'settings'
     ];
-
-
 }

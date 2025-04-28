@@ -3,10 +3,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
-@php
-    $appSetting = app(App\Services\AppSettingService::class);
-@endphp
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -31,7 +27,7 @@
 
 {{-- La variable notifications es para usar el componente de Penguin UI --}}
 
-<body class="min-h-screen font-sans antialiased bg-base-200/50 dark:bg-base-200" x-data>
+<body class="min-h-screen font-sans antialiased bg-base-200/50">
     <x-penguin-notification />
 
     @php
@@ -40,9 +36,6 @@
     @endphp
 
     @include('layouts.navigation.' . $layout)
-
-    {{-- Theme toggle --}}
-    <x-mary-theme-toggle class="hidden" />
 
     <!-- Livewire scripts -->
     @livewireScripts

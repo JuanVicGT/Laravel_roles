@@ -7,9 +7,13 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 // Gestión de configuraciones
 use App\Services\AppSettingService;
 
+use Illuminate\Support\Facades\Auth;
+
+use App\Utils\Alerts;
+
 abstract class Controller
 {
-    use AuthorizesRequests;
+    use Alerts, AuthorizesRequests;
 
     private AppSettingService $appSetting;
 
@@ -53,7 +57,8 @@ abstract class Controller
      */
     public function checkPermission(string $module, string $action): mixed
     {
-        $user = auth()->user();
+        /** @var \App\Models\User */
+        $user = Auth::user();
         if ($user->is_admin) {
             return true;
         }

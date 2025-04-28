@@ -1,0 +1,32 @@
+{
+    "priority": 1,
+    "settings": {
+        "general": [
+            {
+                "field": "decimals",
+                "input": "input",
+                "type": "number",
+                "label": "Decimals",
+                "description": "Number of decimals to use in the system edited",
+                "default": 2
+            },
+            {
+                "field": "currency2",
+                "input": "input",
+                "type": "text",
+                "label": "Currency2",
+                "description": "Currency used in the system edited",
+                "default": "GTQ"
+            }
+        ],
+        "users": [
+            {
+                "field": "without_fel_access",
+                "type": "checkbox",
+                "label": "Without Fel Access",
+                "description": "Without Fel Access",
+                "default": true
+            }
+        ]
+    }
+}

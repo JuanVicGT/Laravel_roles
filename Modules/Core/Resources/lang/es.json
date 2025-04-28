@@ -33,5 +33,6 @@
     "Log In": "Inicio de sesión",
     "Sign In": "Ingresar",
     "Profile": "Perfil",
-    "Log Out": "Cerrar Sesión"
+    "Log Out": "Cerrar Sesión",
+    ":element saved successfully": ":element se ha guardado correctamente"
 }

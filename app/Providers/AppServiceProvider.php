@@ -32,6 +32,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        view()->composer('*', function($view) {
+            $view->with('appSettings', app(AppSettingService::class));
+        });
+
         // Rutas personalizadas para el layout
         Blade::component('layouts.app', 'app-layout');
         Blade::component('layouts.guest', 'guest-layout');

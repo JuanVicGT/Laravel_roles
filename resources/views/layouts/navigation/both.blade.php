@@ -1,27 +1,63 @@
 @php
+
+    use Illuminate\Support\Facades\Cache;
+
     // Se procesan los menús y submenús con sus respectivas rutas para cargarlos dinamicamente
-    $menu = [];
+    $menu = getNavigationMenu();
 
-    $modules_pages = collect(glob(base_path('Modules/*/pages.json')))
-        ->flatMap(function ($path) {
-            $module = json_decode(file_get_contents($path), true);
-            return $module['pages'];
-        })
-        ->sortByDesc('priority')
-        ->toArray();
+    $is_admin = auth()->user()->is_admin ?? false;
 
-    $is_admin = auth()->user()->is_admin;
+    /**
+     * Obtiene el menú de navegación filtrado por los permisos del usuario.
+     * @return array
+     */
+    function getNavigationMenu(): array
+    {
+        $user = auth()->user();
+        $is_admin = $user->is_admin;
 
-    // Recorrer las rutas para generar el menú
-    foreach ($modules_pages as $page) {
-        // Verificar permisos
-        if (!$is_admin && !auth()->user()->can($page['permission']) . '.index') {
-            continue;
+        // Configurar si quieres activar el cache (en desarrollo lo ponemos en false)
+        $cacheEnabled = false; // Cambiar a 'true' para activar el cache en producción
+
+        // Crear una llave de cache única por usuario
+        $cacheKey = 'user_' . $user->id . '_menu';
+
+        // Si el cache está habilitado, intentamos obtenerlo
+        if ($cacheEnabled) {
+            $menu = Cache::get($cacheKey);
+        } else {
+            $menu = null; // No usamos cache, siempre lo vamos a generar
         }
 
-        // En el sidebar no se va a verificar si hay submenús, pues se va a mostrar todo en el mismo menú
-        $menu[$page['menu']][$page['permission']] = $page;
+        // Si no hay cache o si no se activó el cache, generamos el menú
+        if (!$menu) {
+            $pages_files = glob(base_path('Modules/*/pages.json'));
+
+            // Genera el menú filtrado según los permisos del usuario
+            $menu = collect($pages_files)
+                ->flatMap(function ($path) {
+                    $module = json_decode(file_get_contents($path), true);
+                    return $module['pages'] ?? [];
+                })
+                ->sortByDesc('priority')
+                ->filter(function ($page) use ($user, $is_admin) {
+                    return $is_admin || $user->can($page['permission'] . '.index');
+                })
+                ->groupBy('menu')
+                ->map(function ($pages) {
+                    return $pages->keyBy('permission')->toArray();
+                })
+                ->toArray();
+
+            // Si el cache está habilitado, guardamos el menú en cache
+            if ($cacheEnabled) {
+                Cache::put($cacheKey, $menu, 600); // Cache por 10 minutos
+            }
+        }
+
+        return $menu;
     }
+
 @endphp
 
 {{-- The navbar with `sticky` and `full-width` --}}

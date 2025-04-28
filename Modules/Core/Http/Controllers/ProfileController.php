@@ -6,7 +6,7 @@ use Modules\Core\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class UserController extends Controller
+class ProfileController extends Controller
 {
     #region Vistas
     public function index()

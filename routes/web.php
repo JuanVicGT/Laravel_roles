@@ -15,14 +15,19 @@ use Illuminate\Support\Facades\Redirect;
 require __DIR__ . '/auth.php';
 
 Route::get('/', function () {
-    return Redirect::to('/dashboard');
+    return Redirect::to('/Dashboard');
 });
 
+// Dashboard
+Route::get('/Dashboard', function () {
+    return view('pages.dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
+// Others Modules
 Route::middleware(['auth', 'verified'])->group(function () {
 
     // Wizard Module
-    Route::prefix('/wizard')->group(function () {
+    Route::prefix('/Wizard')->group(function () {
 
         // Main Controller
         Route::controller(WizardController::class)->group(function () {

@@ -2,10 +2,8 @@
 
 namespace Modules\Core\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller; // Importa la clase base
-use Illuminate\Http\Request;
 
 class UserManagmentController extends Controller
 {

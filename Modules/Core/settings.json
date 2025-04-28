@@ -1,20 +1,25 @@
 {
     "priority": 1,
-    "general": {
-        "checkboxes": [],
-        "inputs": [
+    "settings": {
+        "general": [
             {
-                "name": "decimals",
+                "field": "full_access",
+                "type": "checkbox",
+                "label": "Full Access",
+                "description": "Full access to the system for any user",
+                "default": false
+            },
+            {
+                "field": "decimals",
+                "input": "input",
                 "type": "number",
                 "label": "Decimals",
                 "description": "Number of decimals to use in the system",
-                "default": 2
-            }
-        ],
-        "textareas": [],
-        "selects": [
+                "default": 2,
+                "step": 1
+            },
             {
-                "name": "currency",
+                "field": "currency",
                 "type": "select",
                 "label": "Currency",
                 "description": "Currency used in the system",
@@ -29,7 +34,7 @@
                         "label": "USD",
                         "value": "USD"
                     }
-                ],
+                ]
             }
         ]
     }
