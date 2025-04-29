@@ -11,6 +11,8 @@
         }
     ],
     "per_role": [
-        {}
+        {
+            "name": "test_permission"
+        }
     ]
 }

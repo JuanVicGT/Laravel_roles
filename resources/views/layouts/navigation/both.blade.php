@@ -9,9 +9,10 @@
 
     /**
      * Obtiene el menú de navegación filtrado por los permisos del usuario.
+     * @param bool $ignore_cache Ignora el cache si es true
      * @return array
      */
-    function getNavigationMenu(): array
+    function getNavigationMenu($ignore_cache = false): array
     {
         $user = auth()->user();
         $is_admin = $user->is_admin;
@@ -23,7 +24,7 @@
         $cacheKey = 'user_' . $user->id . '_menu';
 
         // Si el cache está habilitado, intentamos obtenerlo
-        if ($cacheEnabled) {
+        if ($cacheEnabled && !$ignore_cache) {
             $menu = Cache::get($cacheKey);
         } else {
             $menu = null; // No usamos cache, siempre lo vamos a generar
@@ -152,11 +153,6 @@
                 </x-mary-list-item>
             @endif
 
-            {{-- Wizard Link --}}
-            @if ($is_admin)
-                <x-mary-menu-item title="{{ __('Wizard') }}" icon="c-cog" link="{{ route('wizard.index') }}" />
-            @endif
-
             {{-- Custom Links --}}
             @foreach ($menu as $section => $pages)
                 @if (count($pages) === 1)
@@ -185,8 +181,8 @@
         @if (session('alerts'))
             @foreach (session('alerts') as $alert)
                 <div class="pb-5">
-                    <x-penguin-alert type="{{ $alert['type'] ?? 'info' }}" title="{{ $alert['title'] ?? '' }}"
-                        message="{{ $alert['message'] }}" />
+                    <x-penguin-alert type="{{ $alert->type }}" title="{{ $alert->title }}"
+                        message="{{ $alert->message }}" />
                 </div>
             @endforeach
         @endif

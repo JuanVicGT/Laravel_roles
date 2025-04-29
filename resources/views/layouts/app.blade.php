@@ -12,6 +12,8 @@
 
     @if (file_exists(public_path('assets/images/favicon.ico')))
         <link rel="icon" type="image/x-icon" href="{{ asset('assets/images/favicon.ico') }}">
+    @else
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
     @endif
 
     <!-- Fonts -->

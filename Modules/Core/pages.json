@@ -10,11 +10,11 @@
             "submenu": "none"
         },
         {
-            "icon": "m-user-group",
-            "title": "Users",
+            "icon": "c-cog",
+            "title": "Wizard",
             "menu": "Admin",
-            "permission": "user",
-            "route": "user_managment.index",
+            "permission": "wizard",
+            "route": "wizard.index",
             "submenu": "none"
         },
         {
@@ -23,6 +23,14 @@
             "menu": "Admin",
             "permission": "setting",
             "route": "setting.index",
+            "submenu": "none"
+        },
+        {
+            "icon": "m-user-group",
+            "title": "Users",
+            "menu": "Admin",
+            "permission": "user",
+            "route": "user_managment.index",
             "submenu": "none"
         }
     ]

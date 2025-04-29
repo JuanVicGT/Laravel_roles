@@ -1,11 +1,10 @@
 <?php
 
-namespace Modules\Core\Http\Controllers;
+namespace Modules\Core\Http\Controllers\Setting;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Utils\Enums\AlertTypeEnum;
-use Illuminate\Support\Facades\Auth;
 
 class SettingController extends Controller
 {

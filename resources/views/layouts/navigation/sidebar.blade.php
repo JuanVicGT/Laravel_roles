@@ -9,9 +9,10 @@
 
     /**
      * Obtiene el menú de navegación filtrado por los permisos del usuario.
+     * @param bool $ignore_cache Ignora el cache si es true
      * @return array
      */
-    function getNavigationMenu(): array
+    function getNavigationMenu($ignore_cache = false): array
     {
         $user = auth()->user();
         $is_admin = $user->is_admin;
@@ -23,7 +24,7 @@
         $cacheKey = 'user_' . $user->id . '_menu';
 
         // Si el cache está habilitado, intentamos obtenerlo
-        if ($cacheEnabled) {
+        if ($cacheEnabled && !$ignore_cache) {
             $menu = Cache::get($cacheKey);
         } else {
             $menu = null; // No usamos cache, siempre lo vamos a generar
@@ -88,7 +89,7 @@
                 <a href="{{ route('dashboard') }}">
                     <x-application-logo class="w-24 object-contain fill-current text-gray-800 dark:text-gray-200" />
                 </a>
-                <span class="text-center mt-2">{{ config('app.layout_name', __('New Instance')) }}</span>
+                <span class="text-center mt-2">{{ config('app.layout_name') }}</span>
             </div>
         </div>
 
@@ -157,11 +158,6 @@
                 </div>
 
                 <x-mary-menu-separator />
-            @endif
-
-            {{-- Wizard Link --}}
-            @if ($is_admin)
-                <x-mary-menu-item title="{{ __('Wizard') }}" icon="c-cog" link="{{ route('wizard.index') }}" />
             @endif
 
             {{-- Custom Links --}}

@@ -34,5 +34,6 @@
     "Sign In": "Ingresar",
     "Profile": "Perfil",
     "Log Out": "Cerrar Sesión",
-    ":element saved successfully": ":element se ha guardado correctamente"
+    ":element saved successfully": ":element se ha guardado correctamente",
+    "Wizard Description": "En el tab principal, se recorren todas las páginas del sistema y se les asignan los diferentes permisos. Lo que hace esta vista es revisar si los permisos existen y de no ser así, crear los permisos faltantes."
 }

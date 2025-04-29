@@ -16,6 +16,8 @@ class Permission extends BaseModel
      */
     protected $fillable = [
         'name',
-        'menu'
+        'menu',
+        'guard_name',
+        'is_custom'
     ];
 }

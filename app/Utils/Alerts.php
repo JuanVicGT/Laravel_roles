@@ -27,7 +27,7 @@ trait Alerts
      * @param ?bool trans Is a boolean flag that indicates whether the message should be
      * translated or not.
      */
-    public function addAlert(string $message, ?array $attributes = [], ?AlertTypeEnum $alert_type, ?bool $trans = true): void
+    public function addAlert(string $message, ?array $attributes = [], ?AlertTypeEnum $alert_type = null, ?bool $trans = true): void
     {
         $this->alerts[] = (object) [
             'type' => $alert_type ?? AlertTypeEnum::Info,
@@ -36,11 +36,21 @@ trait Alerts
         ];
     }
 
+    /**
+     * The function "getAlerts" returns an array of alerts.
+     * 
+     * @return array
+     */
     public function getAlerts(): array
     {
-        return session('alerts', $this->alerts);
+        return session('alerts', $this->alerts ?? []);
     }
 
+    /**
+     * The function "getAlertsArray" returns an array of alerts.
+     * 
+     * @return array
+     */
     public function getAlertsArray(): array
     {
         if (empty($this->alerts)) {
@@ -50,8 +60,25 @@ trait Alerts
         return $this->alerts;
     }
 
+    /**
+     * The function "getAlertsView" forces the system to shows alerts in a view.
+     * 
+     * If exist any alerts before, they will be overwritten
+     * 
+     * @return void
+     */
+    public function showAlertsView(): void
+    {
+        if (empty($this->alerts)) {
+            return;
+        }
+
+        session()->now('alerts', $this->alerts);
+    }
+
     public function clearAlerts(): void
     {
         $this->alerts = [];
+        session()->forget('alerts');
     }
 }
