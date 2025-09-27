@@ -46,7 +46,7 @@ class SettingController extends Controller
             }
         }
 
-        $this->addAlert(':element saved successfully', ['element' => __('Settings')], AlertTypeEnum::Success);
+        $this->addAlert(':element saved successfully', ['element' => __('Settings')], AlertTypeEnum::SUCCESS);
         return redirect()->route('setting.index')->with('alerts', $this->getAlertsArray());
     }
 

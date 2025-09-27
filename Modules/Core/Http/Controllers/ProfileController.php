@@ -5,31 +5,57 @@ namespace Modules\Core\Http\Controllers;
 use Modules\Core\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Utils\Enums\AlertTypeEnum;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 
 class ProfileController extends Controller
 {
     #region Vistas
-    public function index()
+    public function edit()
     {
-        $this->checkPermission('user', 'index');
+        $user = auth()->user();
+
+        return view('module::Profile.ProfileEdit', compact('user'));
     }
-
-    public function create()
-    {
-        $this->checkPermission('user', 'create');
-
-        return view('module::User.UserCreate');
-    }
-
-    public function view($id) {}
-
-    public function edit($id) {}
     #endregion
 
     #region Acciones
+
+    public function passwordUpdate(Request $request)
+    {
+        $validated = $request->validateWithBag('updatePassword', [
+            'current_password' => ['required', 'current_password'],
+            'password' => ['required', Password::defaults(), 'confirmed'],
+        ]);
+
+        $request->user()->update([
+            'password' => Hash::make($validated['password']),
+        ]);
+
+        $this->addAlert(__('Password updated successfully'), [], AlertTypeEnum::SUCCESS);
+        return back()->with('alerts', $this->getAlerts());
+    }
+
     public function store(Request $request) {}
 
-    public function update() {}
+    public function update(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255',
+            'locale' => 'required|string|max:5'
+        ]);
+
+        $user = auth()->user();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->locale = $request->locale;
+        $user->save();
+
+        $this->addAlert(__('Profile updated successfully'), [], AlertTypeEnum::SUCCESS);
+        return back()->with('alerts', $this->getAlerts());
+    }
 
     public function delete() {}
 

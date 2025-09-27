@@ -38,7 +38,7 @@ class ModulesServiceProvider extends ServiceProvider {
             $this->loadJsonTranslationsFrom(base_path("Modules/{$module}/Resources/lang"));
 
             // Cargar migraciones
-            $this->loadMigrationsFrom(base_path("Modules/{$module}/Database/Migrations"));
+            $this->loadMigrationsFrom(base_path("Modules/{$module}/database/migrations"));
         }
     }
 

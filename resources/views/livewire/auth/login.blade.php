@@ -86,7 +86,7 @@ new #[Layout('layouts.guest')] class extends Component {
             <h2 class="text-2xl font-bold text-base-content mb-6 text-center">{{ __('Welcome') }}</h2>
 
             <x-mary-form wire:submit="login">
-                <x-mary-input label="{{ __('Username') }}" wire:model="username" />
+                <x-mary-input label="{{ __('Username') }}" wire:model="username" autofocus />
                 <x-mary-password label="{{ __('Password') }}" wire:model="password" right />
 
                 <div class="flex items-center justify-between">

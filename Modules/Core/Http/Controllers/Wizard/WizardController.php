@@ -22,7 +22,7 @@ class WizardController extends Controller
         $this->createPagePermissions($pages);
         $this->createCustomPermissions($permissions);
 
-        $this->addAlert('Permissions created successfully', [], AlertTypeEnum::Success);
+        $this->addAlert('Permissions created successfully', [], AlertTypeEnum::SUCCESS);
         return redirect()->route('wizard.index')->with('alerts', $this->getAlertsArray());
     }
 

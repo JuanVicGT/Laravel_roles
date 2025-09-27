@@ -8,9 +8,9 @@ enum AlertTypeEnum: string
 {
     use EnumToArray;
 
-    case Default = '';
-    case Error = 'error';
-    case Warning = 'warning';
-    case Info = 'info';
-    case Success = 'success';
+    case DEFAULT = '';
+    case ERROR = 'error';
+    case WARNING = 'warning';
+    case INFO = 'info';
+    case SUCCESS = 'success';
 }

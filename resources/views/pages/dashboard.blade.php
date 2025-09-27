@@ -5,7 +5,8 @@
         </h2>
     </x-slot>
 
-    <div>
+    {{-- Notifications, remember initialize Alpine for notifications --}}
+    <div x-data="{}">
         <div class="mx-auto">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
@@ -45,7 +46,7 @@
                 <div class="flex w-full flex-col gap-1 text-slate-700 dark:text-slate-300">
                     <label for="currencyInput" class="w-fit pl-0.5 text-sm">Amount</label>
                     <input id="currencyInput" type="text"
-                        class="w-full rounded-xl border border-slate-300 bg-slate-100 px-2 py-2 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700 disabled:cursor-not-allowed disabled:opacity-75 dark:border-slate-700 dark:bg-slate-800/50 dark:focus-visible:outline-blue-600"
+                        class="w-full rounded-xl border border-slate-300 bg-slate-100 px-2 py-2 text-sm focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-700 disabled:cursor-not-allowed disabled:opacity-75 dark:border-slate-700 dark:bg-slate-800/50 dark:focus-visible:outline-blue-600"
                         name="amount" placeholder="Enter amount" autocomplete="off" />
                 </div>
 
@@ -53,3 +54,4 @@
         </div>
     </div>
 </x-app-layout>
+

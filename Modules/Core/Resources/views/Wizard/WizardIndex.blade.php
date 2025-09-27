@@ -1,206 +1,77 @@
 @php
     $pages_no = 1;
     $permissions_no = 1;
-
-    // Se procesan los menús y submenús con sus respectivas rutas para cargarlos dinamicamente
-    $pages_files = glob(base_path('Modules/*/pages.json'));
-
-    // Genera el menú filtrado según los permisos del usuario
-    $modules_pages = collect($pages_files)
-        ->flatMap(function ($path) {
-            $module = json_decode(file_get_contents($path), true);
-            return $module['pages'] ?? [];
-        })
-        ->sortByDesc('priority')
-        ->groupBy('menu')
-        ->map(function ($pages) {
-            return $pages->keyBy('permission')->toArray();
-        })
-        ->toArray();
-
-    // Se procesan los menús y submenús con sus respectivas rutas para cargarlos dinamicamente
-    $custom_permissions = glob(base_path('Modules/*/permissions.json'));
-
-    // Genera el menú filtrado según los permisos del usuario, estos no manejan prioridad
-    $modules_permissions = collect($custom_permissions)
-        ->flatMap(function ($path) {
-            $module = json_decode(file_get_contents($path), true);
-            return $module['per_role'] ?? [];
-        })
-        ->toArray();
 @endphp
 
 <x-app-layout path="layouts.app" :tab_title="__('Wizard')">
 
-    {{-- Form --}}
-    <x-mary-card shadow class="w-full">
-        <x-mary-form method="POST" action="{{ route('permission.reset') }}" x-data="{ submitButtonDisabled: false }"
-            x-on:submit="submitButtonDisabled = true">
-            @csrf
+    {{-- Tabs Header --}}
+    <div x-data="{ selectedTab: 'page-permissions' }" class="w-full">
+        <div x-on:keydown.right.prevent="$focus.wrap().next()" x-on:keydown.left.prevent="$focus.wrap().previous()"
+            class="flex gap-2 overflow-x-auto border-b border-outline dark:border-outline-dark" role="tablist"
+            aria-label="tab options">
 
-            <!-- name of each tab group should be unique -->
-            <div class="tabs tabs-lift mb-10">
-                <input type="radio" name="my_tabs_permissions" class="tab"
-                    aria-label="{{ __('Tab Pages Permissions') }}" checked="checked" />
-                <div class="tab-content bg-base-100 border-base-300 p-6">
-                    <p class="mb-2 max-w-lg mx-auto text-left">
-                        {{ __('Wizard Description') }}
-                    </p>
+            {{-- Pages Permissions Tab --}}
+            <button x-on:click="selectedTab = 'page-permissions'"
+                x-bind:aria-selected="selectedTab === 'page-permissions'"
+                x-bind:tabindex="selectedTab === 'page-permissions' ? '0' : '-1'"
+                x-bind:class="selectedTab === 'page-permissions' ?
+                    'font-bold text-primary border-b-2 border-primary dark:border-primary-dark dark:text-primary-dark' :
+                    'text-on-surface font-medium dark:text-on-surface-dark dark:hover:border-b-outline-dark-strong dark:hover:text-on-surface-dark-strong hover:border-b-2 hover:border-b-outline-strong hover:text-on-surface-strong'"
+                class="flex h-min items-center gap-2 px-4 py-2 text-sm" type="button" role="tab"
+                aria-controls="tabpanelPagesPermissions">
+                <i class="fa-solid fa-file-shield"></i>
+                {{ __('Page Permissions') }}
+            </button>
 
-                    <ul class="list-disc mb-2 max-w-lg mx-auto text-left">
-                        <li>{{ __('Index') }}</li>
-                        <li>{{ __('Store') }}</li>
-                        <li>{{ __('Update') }}</li>
-                        <li>{{ __('Delete') }}</li>
-                        <li>{{ __('Destroy') }}</li>
-                        <li>{{ __('Import') }}</li>
-                        <li>{{ __('Export') }}</li>
-                    </ul>
+            {{-- Extra Permissions Tab --}}
+            <button x-on:click="selectedTab = 'extra-permissions'"
+                x-bind:aria-selected="selectedTab === 'extra-permissions'"
+                x-bind:tabindex="selectedTab === 'extra-permissions' ? '0' : '-1'"
+                x-bind:class="selectedTab === 'extra-permissions' ?
+                    'font-bold text-primary border-b-2 border-primary dark:border-primary-dark dark:text-primary-dark' :
+                    'text-on-surface font-medium dark:text-on-surface-dark dark:hover:border-b-outline-dark-strong dark:hover:text-on-surface-dark-strong hover:border-b-2 hover:border-b-outline-strong hover:text-on-surface-strong'"
+                class="flex h-min items-center gap-2 px-4 py-2 text-sm" type="button" role="tab"
+                aria-controls="tabpanelExtraPermissions">
+                <i class="fa-solid fa-user-shield"></i>
+                {{ __('Extra Permissions') }}
+            </button>
 
-                    {{-- Header Submit Button --}}
-                    <div class="w-full flex justify-end">
-                        <div class="btn btn-warning" x-bind:disabled="submitButtonDisabled"
-                            onclick="my_modal_2.showModal()">
-                            <x-mary-loading class="text-primary" x-show="submitButtonDisabled" />
-                            <div x-show="!submitButtonDisabled">
-                                <i class="fa-regular fa-floppy-disk text-xl"></i>
-                                {{ __('Save Permissions') }}
-                            </div>
-                        </div>
-                    </div>
+            {{-- Menu Navigation Tab --}}
+            <button x-on:click="selectedTab = 'menu-navigation'"
+                x-bind:aria-selected="selectedTab === 'menu-navigation'"
+                x-bind:tabindex="selectedTab === 'menu-navigation' ? '0' : '-1'"
+                x-bind:class="selectedTab === 'menu-navigation' ?
+                    'font-bold text-primary border-b-2 border-primary dark:border-primary-dark dark:text-primary-dark' :
+                    'text-on-surface font-medium dark:text-on-surface-dark dark:hover:border-b-outline-dark-strong dark:hover:text-on-surface-dark-strong hover:border-b-2 hover:border-b-outline-strong hover:text-on-surface-strong'"
+                class="flex h-min items-center gap-2 px-4 py-2 text-sm" type="button" role="tab"
+                aria-controls="tabpanelMenuNavigation">
+                <i class="fa-solid fa-map"></i>
+                {{ __('Menu Navigation') }}
+            </button>
+        </div>
 
-                    <div class="overflow-x-auto mb-2">
-                        <table class="table table-zebra">
-                            <!-- head -->
-                            <thead>
-                                <tr>
-                                    <th>{{ __('No.') }}</th>
-                                    <th>{{ __('Page') }}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- rows -->
-                                @foreach ($modules_pages as $section => $pages)
-                                    @empty($pages)
-                                        @continue
-                                    @endempty
+        {{-- Tabs Content --}}
+        <div class="px-2 py-4 text-on-surface dark:text-on-surface-dark">
 
-                                    @foreach ($pages as $page)
-                                        @empty($page)
-                                            @continue
-                                        @endempty
+            {{-- Creación de permisos de página (principales) --}}
+            <div x-cloak x-show="selectedTab === 'page-permissions'" id="tabpanelPagesPermissions" role="tabpanel"
+                aria-label="pages">
+                <livewire:permiso_pagina />
+            </div>
 
-                                        <input type="hidden" name="pages[{{ $page['permission'] }}]"
-                                            value="{{ $page['permission'] }}">
+            {{-- Creación de permisos extras --}}
+            <div x-cloak x-show="selectedTab === 'extra-permissions'" id="tabpanelExtraPermissions" role="tabpanel"
+                aria-label="extras">
+                <livewire:permiso_extra />
+            </div>
 
-                                        <tr>
-                                            <th>{{ $pages_no }}</th>
-                                            <td>{{ $page['permission'] }}</td>
-                                        </tr>
-
-                                        @php $pages_no++; @endphp
-                                    @endforeach
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-
-                    {{-- Footer Submit Button --}}
-                    <div class="w-full flex justify-end">
-                        <div class="btn btn-warning" x-bind:disabled="submitButtonDisabled"
-                            onclick="my_modal_2.showModal()">
-                            <x-mary-loading class="text-primary" x-show="submitButtonDisabled" />
-                            <div x-show="!submitButtonDisabled">
-                                <i class="fa-regular fa-floppy-disk text-xl"></i>
-                                {{ __('Save Permissions') }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <input type="radio" name="my_tabs_permissions" class="tab"
-                    aria-label="{{ __('Tab Custom Permissions') }}" />
-                <div class="tab-content bg-base-100 border-base-300 p-6">
-                    <p class="mb-2 max-w-lg mx-auto text-left">
-                        {{ __('Custom Permissions') }}
-                    </p>
-
-                    {{-- Header Submit Button --}}
-                    <div class="w-full flex justify-end">
-                        <div class="btn btn-warning" x-bind:disabled="submitButtonDisabled"
-                            onclick="my_modal_2.showModal()">
-                            <x-mary-loading class="text-primary" x-show="submitButtonDisabled" />
-                            <div x-show="!submitButtonDisabled">
-                                <i class="fa-regular fa-floppy-disk text-xl"></i>
-                                {{ __('Save Permissions') }}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="overflow-x-auto mb-2">
-                        <table class="table table-zebra">
-                            <!-- head -->
-                            <thead>
-                                <tr>
-                                    <th>{{ __('No.') }}</th>
-                                    <th>{{ __('Permission') }}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- rows -->
-                                @foreach ($modules_permissions as $permission)
-                                    @empty($permission)
-                                        @continue
-                                    @endempty
-
-                                    <input type="hidden" name="permissions[{{ $permission['name'] }}]"
-                                        value="{{ $permission['name'] }}">
-
-                                    <tr>
-                                        <th>{{ $permissions_no }}</th>
-                                        <td>{{ $permission['name'] }}</td>
-                                    </tr>
-
-                                    @php $permissions_no++; @endphp
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-
-                    {{-- Footer Submit Button --}}
-                    <div class="w-full flex justify-end">
-                        <div class="btn btn-warning" x-bind:disabled="submitButtonDisabled"
-                            onclick="my_modal_2.showModal()">
-                            <x-mary-loading class="text-primary" x-show="submitButtonDisabled" />
-                            <div x-show="!submitButtonDisabled">
-                                <i class="fa-regular fa-floppy-disk text-xl"></i>
-                                {{ __('Save Permissions') }}
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-            </div> <!-- END TABS -->
-
-            <!-- Open the modal using ID.showModal() method -->
-            <dialog id="my_modal_2" class="modal">
-                <div class="modal-box">
-                    <h3 class="text-lg font-bold">{{ __('Reset Permissions?') }}</h3>
-                    <p class="py-4">{{ __('Are you sure you want to reset permissions?') }}</p>
-                    <div class="pt-4 flex justify-between">
-                        <button type="button" class="btn" onclick="my_modal_2.close()">{{ __('Cancel') }}</button>
-                        <button type="submit" class="btn btn-success" x-bind:disabled="submitButtonDisabled"
-                            onclick="my_modal_2.showModal()">
-                            <x-mary-loading class="text-primary" x-show="submitButtonDisabled" />
-                            <div x-show="!submitButtonDisabled">
-                                {{ __('Yes, Save Permissions') }}
-                            </div>
-                        </button>
-                    </div>
-                </div>
-            </dialog>
-        </x-mary-form>
-    </x-mary-card>
+            {{-- Menu Navigation --}}
+            <div x-cloak x-show="selectedTab === 'menu-navigation'" id="tabpanelMenuNavigation" role="tabpanel"
+                aria-label="menu-navigation">
+                <livewire:menu_navegacion />
+            </div>
+        </div>
+    </div>
 
 </x-app-layout>

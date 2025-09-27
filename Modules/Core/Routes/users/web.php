@@ -31,13 +31,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     Route::prefix('/Profile')->group(function () {
-        // Index para Usuarios, Roles y Permisos
+        // Index para el Perfil
         Route::controller(UserManagmentController::class)->group(function () {
-            Route::get('/', 'index')->name('user_managment.index');
+            Route::get('/', 'index')->name('profile.index');
         });
 
         // ProfileIndex funciona como el index para Usuarios
-        Route::controller(CoreControllers\UserController::class)->group(function () {
+        Route::put('password', [CoreControllers\ProfileController::class, 'update'])->name('password.update');
+        Route::controller(CoreControllers\ProfileController::class)->group(function () {
             $pathKey = 'Profile';
             $routeKey = 'profile';
 
@@ -51,6 +52,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post("/{$pathKey}Import", 'import')->name($routeKey . '.import');
             Route::patch("/{$pathKey}Update", 'update')->name($routeKey . '.update');
             Route::delete("/{$pathKey}Destroy", 'delete')->name($routeKey . '.delete');
+
+            Route::put("/{$pathKey}PasswordUpdate", 'passwordUpdate')->name($routeKey . '.password.update');
         });
     });
 });

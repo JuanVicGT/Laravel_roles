@@ -30,7 +30,7 @@ trait Alerts
     public function addAlert(string $message, ?array $attributes = [], ?AlertTypeEnum $alert_type = null, ?bool $trans = true): void
     {
         $this->alerts[] = (object) [
-            'type' => $alert_type ?? AlertTypeEnum::Info,
+            'type' => $alert_type ?? AlertTypeEnum::INFO,
             'message' => $trans ? __($message, $attributes) : $message,
             'title' => ''
         ];

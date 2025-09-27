@@ -31,7 +31,15 @@
             "menu": "Admin",
             "permission": "user",
             "route": "user_managment.index",
-            "submenu": "none"
+            "submenu": "Users2"
+        },
+        {
+            "icon": "m-user-group",
+            "title": "Users2",
+            "menu": "Admin2",
+            "permission": "user2",
+            "route": "user_managment.index",
+            "submenu": "test"
         }
     ]
 }
