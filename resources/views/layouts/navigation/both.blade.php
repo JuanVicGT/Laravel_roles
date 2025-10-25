@@ -73,14 +73,52 @@
 
     {{-- Right side actions --}}
     <x-slot:actions>
+
+        {{-- Theme Switcher --}}
+        <x-mary-theme-toggle />
+
+        {{-- Language Switcher --}}
+        <div class="flex items-center space-x-2">
+            <x-mary-dropdown right label="{{ __('Language') }}">
+                <x-mary-menu-item @click.stop="$event.target.closest('form').submit()">
+                    <!-- primary Button with Icon -->
+                    <form method="POST" action="{{ route('profile.language.switch') }}">
+                        @csrf
+                        @method('PUT')
+                        <div class="flex items-center">
+                            <img src="{{ asset('assets/images/es-gt.svg') }}"
+                                class="w-8 h-8 mr-2 rounded-full object-cover" alt="Guatemala" />
+                            <span class="hidden lg:block">{{ __('Spanish') }}</span>
+                            <input type="hidden" name="locale" value="es">
+                        </div>
+                    </form>
+                </x-mary-menu-item>
+
+                <x-mary-menu-item @click.stop="$event.target.closest('form').submit()">
+                    <!-- primary Button with Icon -->
+                    <form method="POST" action="{{ route('profile.language.switch') }}">
+                        @csrf
+                        @method('PUT')
+                        <div class="flex items-center">
+                            <img src="{{ asset('assets/images/en-us.svg') }}"
+                                class="w-8 h-8 mr-2 rounded-full object-cover" alt="Estados Unidos" />
+                            <span class="hidden lg:block">{{ __('English') }}</span>
+                            <input type="hidden" name="locale" value="en">
+                        </div>
+                    </form>
+                </x-mary-menu-item>
+            </x-mary-dropdown>
+        </div>
+
+        {{-- 
         <x-mary-button label="Messages" icon="o-envelope" link="###" class="btn-ghost btn-sm" responsive />
-        <x-mary-button label="Notifications" icon="o-bell" link="###" class="btn-ghost btn-sm" responsive />
+        <x-mary-button label="Notifications" icon="o-bell" link="###" class="btn-ghost btn-sm" responsive /> 
+        --}}
 
         {{-- User --}}
         @if ($user = auth()->user())
             <!-- Theme Toggle and User Section -->
             <div class="flex items-center space-x-4">
-                <x-mary-theme-toggle />
 
                 <div class="hidden sm:flex sm:items-center">
                     {{-- User Dropdown --}}

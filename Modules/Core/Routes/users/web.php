@@ -54,6 +54,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::delete("/{$pathKey}Destroy", 'delete')->name($routeKey . '.delete');
 
             Route::put("/{$pathKey}PasswordUpdate", 'passwordUpdate')->name($routeKey . '.password.update');
+
+            Route::put("/{$pathKey}UpdateLocale", 'updateLocale')->name($routeKey . '.language.switch');
         });
     });
 });

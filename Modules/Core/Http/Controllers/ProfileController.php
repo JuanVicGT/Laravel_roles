@@ -39,6 +39,19 @@ class ProfileController extends Controller
 
     public function store(Request $request) {}
 
+    public function updateLocale(Request $request)
+    {
+        $request->validate([
+            'locale' => 'required|string|max:5'
+        ]);
+
+        $user = auth()->user();
+        $user->locale = $request->locale;
+        $user->save();
+
+        return back();
+    }
+
     public function update(Request $request)
     {
         $request->validate([
