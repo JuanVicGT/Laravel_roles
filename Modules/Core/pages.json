@@ -34,12 +34,12 @@
             "submenu": "Users2"
         },
         {
-            "icon": "m-user-group",
-            "title": "Users2",
-            "menu": "Admin2",
-            "permission": "user2",
-            "route": "user_managment.index",
-            "submenu": "test"
+            "icon": "c-gift-top",
+            "title": "Demo",
+            "menu": "Demo",
+            "permission": "admin",
+            "route": "demo.index",
+            "submenu": "none"
         }
     ]
 }

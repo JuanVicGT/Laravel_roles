@@ -1,0 +1,13 @@
+{
+    "priority": 1,
+    "pages": [
+        {
+            "icon": "s-currency-dollar",
+            "title": "Movements",
+            "menu": "FinancialManagementIndex",
+            "permission": "movement.index",
+            "route": "movement.index",
+            "submenu": "none"
+        }
+    ]
+}

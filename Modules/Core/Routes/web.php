@@ -43,6 +43,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post("/SettingStore", 'store')->name('setting.store');
         });
     });
+
+    // Testing/Demo Routes
+    Route::prefix('/Demo')->group(function () {
+        // Index para Usuarios, Roles y Permisos
+        Route::controller(CoreControllers\Demo\DemoController::class)->group(function () {
+            // Views
+            Route::get('/', 'index')->name('demo.index');
+        });
+    });
 });
 
 // Users Module Routes

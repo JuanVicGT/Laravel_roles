@@ -3,7 +3,7 @@
     "pages": [
         {
             "icon": "m-home",
-            "title": "Dashboard",
+            "title": "Task Manager",
             "menu": "Dashboard2",
             "permission": "dashboard",
             "route": "dashboard",

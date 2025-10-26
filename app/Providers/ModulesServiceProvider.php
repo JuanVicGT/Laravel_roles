@@ -2,20 +2,22 @@
 
 namespace App\Providers;
 
+use Livewire\Livewire;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
-class ModulesServiceProvider extends ServiceProvider {
+class ModulesServiceProvider extends ServiceProvider
+{
     /**
      * Register any application services.
      */
-    public function register(): void {
-    }
+    public function register(): void {}
 
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void {
+    public function boot(): void
+    {
         $modules = collect(glob(base_path('Modules/*/module.json')))
             ->mapWithKeys(function ($path) {
                 $module = json_decode(file_get_contents($path), true);
@@ -30,6 +32,9 @@ class ModulesServiceProvider extends ServiceProvider {
         foreach ($modules as $module) {
             // Cargar vistas
             $this->loadViewsFrom(base_path("Modules/{$module}/Resources/views"), 'module');
+
+            // Cargar vistas de Livewire
+            Livewire::component("module::livewire.{$module}", "Modules/{$module}/Http/Livewire");
 
             // Cargar traducciones
             $this->loadTranslationsFrom(base_path("Modules/{$module}/Resources/lang"), 'module');
@@ -48,7 +53,8 @@ class ModulesServiceProvider extends ServiceProvider {
      * A diferencia de migraciones y otros, las rutas se cargan con el orden al revés esto porque
      * al procesar la ruta, se devuelve la primera ruta que coincida con la ruta que se busca
      */
-    protected function loadCustomRoutes($modules): void {
+    protected function loadCustomRoutes($modules): void
+    {
         // Cargar rutas generales
         Route::middleware('web')
             ->group(base_path('routes/general.php'));

@@ -1,17 +1,13 @@
 <x-app-layout path="layouts.app">
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Dashboard') }}
+            {{ __('Movements') }}
         </h2>
     </x-slot>
 
     {{-- Notifications, remember initialize Alpine for notifications --}}
-    <div x-data="{}">
-        <div class="mx-auto py-2">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-4">
-
-            </div>
-        </div>
+    <div x-data="{}" class="p-2">
+        @livewire('module::livewire.SimpleFinancialManagement.Movement', key('movement'))
     </div>
-</x-app-layout>
 
+</x-app-layout>
