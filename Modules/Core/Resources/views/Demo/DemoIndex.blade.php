@@ -1,4 +1,4 @@
-<x-app-layout path="layouts.app">
+<x-app-layout :tab_title="__('Demo')">
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('TEST') }}

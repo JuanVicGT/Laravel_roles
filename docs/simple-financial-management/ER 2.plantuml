@@ -1,0 +1,173 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+' Users
+class users {
+    + id : bigint <<PK>>
+    --
+    username : varchar(100)
+    email : varchar(150)
+    password_hash : varchar(255)
+    full_name : varchar(150)
+    locale : varchar(10)
+    created_at : datetime
+    updated_at : datetime
+}
+
+' Wallet / cuentas (efectivo, débito, banco)
+class wallets {
+    + id : bigint <<PK>>
+    user_id : bigint <<FK>>
+    name : varchar(100)
+    type : varchar(30)
+    currency : varchar(10)
+    balance : decimal(14,2)
+    created_at : datetime
+    updated_at : datetime
+}
+
+' Buckets
+class buckets {
+    + id : bigint <<PK>>
+    user_id : bigint <<FK>>
+    name : varchar(100)
+    description : text
+    kind : varchar(30)
+    created_at : datetime
+    updated_at : datetime
+}
+
+' Bucket defaults
+class bucket_defaults {
+    + id : bigint <<PK>>
+    bucket_id : bigint <<FK>>
+    effective_from : date
+    amount : decimal(14,2)
+    note : varchar(255)
+    created_at : datetime
+}
+
+' Subcategories
+class subcategories {
+    + id : bigint <<PK>>
+    bucket_id : bigint <<FK>>
+    name : varchar(100)
+    description : text
+    created_at : datetime
+    updated_at : datetime
+}
+
+' Transactions (antes movements)
+class transactions {
+    + id : bigint <<PK>>
+    user_id : bigint <<FK>>
+    wallet_id : bigint <<FK>>
+    bucket_id : bigint <<FK>>
+    subcategory_id : bigint <<FK>>
+    credit_card_id : bigint <<FK>>
+    related_transaction_id : bigint <<FK>>
+    type : varchar(30)
+    origin : varchar(20)
+    card_tx_type : varchar(30)
+    amount : decimal(14,2)
+    currency : varchar(10)
+    description : text
+    date : date
+    reconciled : boolean
+    metadata : json
+    created_at : datetime
+    updated_at : datetime
+}
+
+' Credit cards
+class credit_cards {
+    + id : bigint <<PK>>
+    user_id : bigint <<FK>>
+    name : varchar(100)
+    bank : varchar(100)
+    currency : varchar(10)
+    credit_limit : decimal(14,2)
+    billing_day : tinyint
+    payment_due_day : tinyint
+    annual_rate_pct : decimal(6,3)
+    monthly_rate_pct : decimal(6,3)
+    active : boolean
+    created_at : datetime
+    updated_at : datetime
+}
+
+' Card cycles
+class card_cycles {
+    + id : bigint <<PK>>
+    credit_card_id : bigint <<FK>>
+    period_start : date
+    period_end : date
+    statement_amount : decimal(14,2)
+    statement_date : date
+    due_date : date
+    paid_amount : decimal(14,2)
+    paid_date : date
+    interest_charged : decimal(14,2)
+    created_at : datetime
+}
+
+' Tags
+class tags {
+    + id : bigint <<PK>>
+    user_id : bigint <<FK>>
+    name : varchar(50)
+}
+
+class transaction_tag {
+    + id : bigint <<PK>>
+    transaction_id : bigint <<FK>>
+    tag_id : bigint <<FK>>
+}
+
+' Shared funds
+class shared_funds {
+    + id : bigint <<PK>>
+    name : varchar(150)
+    description : text
+    currency : varchar(10)
+    created_at : datetime
+    updated_at : datetime
+}
+
+class shared_fund_members {
+    + id : bigint <<PK>>
+    shared_fund_id : bigint <<FK>>
+    user_id : bigint <<FK>>
+    role : varchar(30)
+    contribution_default : decimal(14,2)
+}
+
+' Relationships
+users "1" -- "0..n" wallets
+users "1" -- "0..n" buckets
+buckets "1" -- "0..n" bucket_defaults
+buckets "1" -- "0..n" subcategories
+users "1" -- "0..n" credit_cards
+credit_cards "1" -- "0..n" card_cycles
+users "1" -- "0..n" transactions
+wallets "1" -- "0..n" transactions
+buckets "1" -- "0..n" transactions
+subcategories "1" -- "0..n" transactions
+credit_cards "1" -- "0..n" transactions
+transactions "1" -- "0..n" transaction_tag
+tags "1" -- "0..n" transaction_tag
+shared_funds "1" -- "0..n" shared_fund_members
+users "1" -- "0..n" shared_fund_members
+
+note top of transactions
+    transactions guarda todos los movimientos:
+    - Si origin = CREDIT_CARD -> credit_card_id debe existir
+    - related_transaction_id enlaza pagos con compras
+end note
+
+note top of credit_cards
+    credit_cards guarda tasas, corte y límites.
+    card_cycles guarda el resumen por período (statement).
+end note
+
+@enduml

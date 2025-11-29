@@ -6,8 +6,6 @@
     </x-slot>
 
     {{-- Notifications, remember initialize Alpine for notifications --}}
-    <div x-data="{}" class="p-2">
-        @livewire('module::livewire.SimpleFinancialManagement.Movement', key('movement'))
-    </div>
+    @livewire('modules.simple-financial-management.movement-crud')
 
 </x-app-layout>

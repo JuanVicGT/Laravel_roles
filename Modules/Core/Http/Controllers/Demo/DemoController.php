@@ -20,6 +20,7 @@ class DemoController extends Controller
         $this->addAlert(':element saved successfully', ['element' => __('TEST')], AlertTypeEnum::ERROR);
         $this->addAlert(':element saved successfully', ['element' => __('TEST')], AlertTypeEnum::INFO);
 
+        $this->showAlertsView();
         return view('module::Demo.DemoIndex');
     }
 

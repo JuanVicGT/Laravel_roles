@@ -2,11 +2,12 @@
 <div x-data="{
     notifications: [],
     displayDuration: 5000,
+    defaultPosition: 'bottom-left',
     soundEffect: false,
 
-    addNotification({ variant = 'info', sender = null, title = null, message = null }) {
-        const id = Date.now()
-        const notification = { id, variant, sender, title, message }
+    addNotification({ variant = 'info', sender = null, title = null, message = null, position = null, sound = null }) {
+        const id = Date.now() + Math.random().toString(16).slice(2)
+        const notification = { id, variant, sender, title, message, position, sound }
 
         // Keep only the most recent 20 notifications
         if (this.notifications.length >= 20) {
@@ -16,7 +17,8 @@
         // Add the new notification to the notifications stack
         this.notifications.push(notification)
 
-        if (this.soundEffect) {
+        // Play the notification sound
+        if (sound === true || this.soundEffect === true) {
             // Play the notification sound
             const notificationSound = new Audio('https://res.cloudinary.com/ds8pgw1pf/video/upload/v1728571480/penguinui/component-assets/sounds/ding.mp3')
             notificationSound.play().catch((error) => {
@@ -33,14 +35,28 @@
     },
 }"
     x-on:notify.window="addNotification({
-        variant: $event.detail.variant,
-        sender: $event.detail.sender,
-        title: $event.detail.title,
-        message: $event.detail.message,
-    })">
+    variant: $event.detail.variant,
+    sender: $event.detail.sender ?? null,
+    title: $event.detail.sender?.name ?? null,
+    message: $event.detail.message ?? null,
+    position: $event.detail.position ?? null,
+    sound: $event.detail.sound ?? null
+})">
 
     <div x-on:mouseenter="$dispatch('pause-auto-dismiss')" x-on:mouseleave="$dispatch('resume-auto-dismiss')"
-        class="group pointer-events-none fixed inset-x-8 top-0 z-[99] flex max-w-full flex-col gap-2 bg-transparent px-6 py-6 md:bottom-0 md:left-[unset] md:right-0 md:top-[unset] md:max-w-sm">
+        :class="{
+            'left-0 top-0 justify-start items-start': (notifications[0]?.position ?? defaultPosition) === 'top-left',
+            'left-1/2 top-0 -translate-x-1/2 items-start': (notifications[0]?.position ??
+                defaultPosition) === 'top-center',
+            'right-0 top-0 items-start justify-end': (notifications[0]?.position ?? defaultPosition) === 'top-right',
+        
+            'left-0 bottom-0 justify-start items-end': (notifications[0]?.position ?? defaultPosition) === 'bottom-left',
+            'left-1/2 bottom-0 -translate-x-1/2 items-end': (notifications[0]?.position ??
+                defaultPosition) === 'bottom-center',
+            'right-0 bottom-0 items-end justify-end': (notifications[0]?.position ?? defaultPosition) === 'bottom-right',
+        }"
+        class="group pointer-events-none fixed z-[99] flex max-w-full flex-col gap-2 bg-transparent px-6 py-6 md:max-w-sm">
+
         <template x-for="(notification, index) in notifications" x-bind:key="notification.id">
             <!-- root div holds all of the notifications  -->
             <div>
@@ -245,15 +261,6 @@
                                         x-text="notification.sender.name"></h3>
                                     <p x-cloak x-show="notification.message" class="text-pretty text-sm"
                                         x-text="notification.message"></p>
-
-                                    <!-- Action Buttons -->
-                                    <div class="flex items-center gap-4">
-                                        <button type="button"
-                                            class="cursor-pointer whitespace-nowrap bg-transparent text-center text-sm font-bold tracking-wide text-blue-700 transition hover:opacity-75 active:opacity-100 dark:text-blue-600">Reply</button>
-                                        <button type="button"
-                                            class="cursor-pointer whitespace-nowrap bg-transparent text-center text-sm font-bold tracking-wide text-slate-700 transition hover:opacity-75 active:opacity-100 dark:text-slate-300"
-                                            x-on:click=" (isVisible = false), setTimeout(() => { removeNotification(notification.id) }, 400)">Dismiss</button>
-                                    </div>
                                 </div>
                             </div>
 

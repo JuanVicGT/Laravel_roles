@@ -1,0 +1,174 @@
+@startuml
+' Entity style
+skinparam classAttributeIconSize 0
+
+' Users
+class users {
+    + id : bigint <<PK>>
+    --
+    username : varchar(100)
+    email : varchar(150)
+    password_hash : varchar(255)
+    full_name : varchar(150)
+    locale : varchar(10)
+    created_at : datetime
+    updated_at : datetime
+}
+
+' Wallet / billetera (efectivo, débito, cuentas)
+class wallets {
+    + id : bigint <<PK>>
+    user_id : bigint <<FK>>
+    name : varchar(100)
+    type : varchar(30)  ' e.g. cash, debit, bank_account, wallet
+    currency : varchar(10)
+    balance : decimal(14,2)
+    created_at : datetime
+    updated_at : datetime
+}
+
+' Buckets principales (Obligatorio, Fondo Familiar, Ahorro, etc)
+class buckets {
+    + id : bigint <<PK>>
+    user_id : bigint <<FK>>
+    name : varchar(100)
+    description : text
+    kind : varchar(30) ' e.g. "obligatorio","ahorro","familiar","gusto"
+    created_at : datetime
+    updated_at : datetime
+}
+
+' Historico de defaults por bucket
+class bucket_defaults {
+    + id : bigint <<PK>>
+    bucket_id : bigint <<FK>>
+    effective_from : date
+    amount : decimal(14,2)
+    note : varchar(255)
+    created_at : datetime
+}
+
+' Subcategorías vinculadas a buckets
+class subcategories {
+    + id : bigint <<PK>>
+    bucket_id : bigint <<FK>>
+    name : varchar(100)
+    description : text
+    created_at : datetime
+    updated_at : datetime
+}
+
+' Movements (una sola tabla para todo tipo de movimientos)
+class movements {
+    + id : bigint <<PK>>
+    user_id : bigint <<FK>>
+    wallet_id : bigint <<FK>>    ' origen/medio (efectivo, débito, cuenta)
+    bucket_id : bigint <<FK>>
+    subcategory_id : bigint <<FK>>
+    credit_card_id : bigint <<FK>>  ' nullable: si aplica a tarjeta
+    related_movement_id : bigint <<FK>> ' opcional (p.ej. pago que liquida compra)
+    type : varchar(30)  ' income | expense | transfer | card_payment | card_interest
+    origin : varchar(20) ' CASH | DEBIT | CREDIT_CARD
+    card_tx_type : varchar(30) ' purchase | payment | interest | reversal | fee (si aplica)
+    amount : decimal(14,2)
+    currency : varchar(10)
+    description : text
+    date : date
+    reconciled : boolean
+    metadata : json
+    created_at : datetime
+    updated_at : datetime
+}
+
+' Credit cards master
+class credit_cards {
+    + id : bigint <<PK>>
+    user_id : bigint <<FK>>
+    name : varchar(100) ' "Visa - Banco X (****1234)"
+    bank : varchar(100)
+    currency : varchar(10)
+    credit_limit : decimal(14,2)
+    billing_day : tinyint ' día de corte (ej. 9)
+    payment_due_day : tinyint ' día límite pago (ej. 2)
+    annual_rate_pct : decimal(6,3) ' e.g. 64.80 (porcentaje anual)
+    monthly_rate_pct : decimal(6,3) ' opcional si banco provee
+    active : boolean
+    created_at : datetime
+    updated_at : datetime
+}
+
+' Credit card cycles (opcional: para llevar cortes y saldos)
+class card_cycles {
+    + id : bigint <<PK>>
+    credit_card_id : bigint <<FK>>
+    period_start : date
+    period_end : date
+    statement_amount : decimal(14,2)
+    statement_date : date
+    due_date : date
+    paid_amount : decimal(14,2)
+    paid_date : date
+    interest_charged : decimal(14,2)
+    created_at : datetime
+}
+
+' Tags (opcional para mejorar búsquedas)
+class tags {
+    + id : bigint <<PK>>
+    user_id : bigint <<FK>>
+    name : varchar(50)
+}
+
+class movement_tag {
+    + id : bigint <<PK>>
+    movement_id : bigint <<FK>>
+    tag_id : bigint <<FK>>
+}
+
+' Shared/family wallets or group funds (opcional)
+class shared_funds {
+    + id : bigint <<PK>>
+    name : varchar(150)
+    description : text
+    currency : varchar(10)
+    created_at : datetime
+    updated_at : datetime
+}
+
+class shared_fund_members {
+    + id : bigint <<PK>>
+    shared_fund_id : bigint <<FK>>
+    user_id : bigint <<FK>>
+    role : varchar(30) ' owner | member
+    contribution_default : decimal(14,2)
+}
+
+' Relationships
+users "1" -- "0..n" wallets : owns >
+users "1" -- "0..n" buckets : owns >
+buckets "1" -- "0..n" bucket_defaults : has >
+buckets "1" -- "0..n" subcategories : has >
+users "1" -- "0..n" credit_cards : owns >
+credit_cards "1" -- "0..n" card_cycles : has >
+users "1" -- "0..n" movements : records >
+wallets "1" -- "0..n" movements : used_in >
+buckets "1" -- "0..n" movements : categorized_in >
+subcategories "1" -- "0..n" movements : categorized_in >
+credit_cards "1" -- "0..n" movements : card_ops >
+movements "1" -- "0..n" movement_tag : tagged >
+tags "1" -- "0..n" movement_tag : tagged_with >
+shared_funds "1" -- "0..n" shared_fund_members : members >
+users "1" -- "0..n" shared_fund_members : member_of >
+
+note top of movements
+    movements guarda todos los movimientos:
+    - si origin = CREDIT_CARD -> credit_card_id debe estar presente
+    - related_movement_id permite enlazar pagos a compras
+end note
+
+note top of credit_cards
+    credit_cards guarda tasas, corte y límites.
+    card_cycles guarda el resumen por período (statement).
+end note
+
+@enduml

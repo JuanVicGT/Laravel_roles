@@ -1,0 +1,88 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam roundcorner 15
+
+start
+
+:'Usuario inicia acción';
+
+if (Elegir tipo de registro) then
+    -> RegistroGasto;
+else
+    -> RegistroIngreso;
+endif
+
+partition RegistroGasto {
+    if (Es gasto?) then
+        :Seleccionar categoria;
+        :Ingresar monto;
+        :Seleccionar metodo de pago;
+
+        if (Metodo es tarjeta?) then
+            :Restar monto del saldo de la tarjeta;
+            :Actualizar ciclo de vida (opcional);
+        endif
+
+        :Registrar gasto;
+        if (Tiene presupuesto asociado?) then
+            :Restar monto del presupuesto;
+        endif
+        :Guardar en historico;
+
+        -> VolverMenu;
+    endif
+}
+
+partition RegistroIngreso {
+    if (Es ingreso?) then
+        :Ingresar monto;
+        :Seleccionar categoria;
+        :Registrar ingreso;
+        :Actualizar balance;
+        :Guardar en historico;
+
+        -> VolverMenu;
+    endif
+}
+
+partition PagoTarjeta {
+    if (Es pago con tarjeta?) then
+        :Elegir tarjeta;
+
+        if (Usar monto por defecto?) then
+            :Tomar valor almacenado;
+        else
+            :Ingresar nuevo monto;
+            :Actualizar valor por defecto;
+        endif
+
+        :Registrar pago;
+        :Restar del saldo de la tarjeta;
+
+        if (Tiene presupuesto asociado?) then
+            :Aplicar impacto al presupuesto;
+        endif
+
+        :Guardar en historico;
+
+        -> VolverMenu;
+    endif
+}
+
+partition Recurrentes {
+    if (Es transaccion recurrente?) then
+        :Configurar frecuencia;
+        :Configurar monto;
+
+        if (Monto basado en default?) then
+            :Usar valor actual del default;
+        endif
+
+        :Guardar configuracion;
+
+        -> VolverMenu;
+    endif
+}
+
+stop
+@enduml

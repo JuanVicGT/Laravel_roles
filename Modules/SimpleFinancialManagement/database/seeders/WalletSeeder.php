@@ -30,13 +30,6 @@ class WalletSeeder extends Seeder
 
         Wallet::create(
             [
-                'name' => 'Ahorro 2',
-                'amount' => 0
-            ]
-        );
-
-        Wallet::create(
-            [
                 'name' => 'Crédito',
                 'amount' => 0
             ]
