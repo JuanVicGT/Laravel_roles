@@ -1,5 +1,4 @@
-@startuml
-' Entity style
+@startuml "test"
 skinparam classAttributeIconSize 0
 
 ' Users
@@ -15,30 +14,30 @@ class users {
     updated_at : datetime
 }
 
-' Wallet / billetera (efectivo, débito, cuentas)
+' Wallet / cuentas (efectivo, débito, banco)
 class wallets {
     + id : bigint <<PK>>
     user_id : bigint <<FK>>
     name : varchar(100)
-    type : varchar(30)  ' e.g. cash, debit, bank_account, wallet
+    type : varchar(30)
     currency : varchar(10)
     balance : decimal(14,2)
     created_at : datetime
     updated_at : datetime
 }
 
-' Buckets principales (Obligatorio, Fondo Familiar, Ahorro, etc)
+' Buckets
 class buckets {
     + id : bigint <<PK>>
     user_id : bigint <<FK>>
     name : varchar(100)
     description : text
-    kind : varchar(30) ' e.g. "obligatorio","ahorro","familiar","gusto"
+    kind : varchar(30)
     created_at : datetime
     updated_at : datetime
 }
 
-' Historico de defaults por bucket
+' Bucket defaults
 class bucket_defaults {
     + id : bigint <<PK>>
     bucket_id : bigint <<FK>>
@@ -48,7 +47,7 @@ class bucket_defaults {
     created_at : datetime
 }
 
-' Subcategorías vinculadas a buckets
+' Subcategories
 class subcategories {
     + id : bigint <<PK>>
     bucket_id : bigint <<FK>>
@@ -58,18 +57,18 @@ class subcategories {
     updated_at : datetime
 }
 
-' Movements (una sola tabla para todo tipo de movimientos)
-class movements {
+' Transactions (antes movements) una sola tabla para todo tipo de movimientos
+class transactions {
     + id : bigint <<PK>>
     user_id : bigint <<FK>>
-    wallet_id : bigint <<FK>>    ' origen/medio (efectivo, débito, cuenta)
+    wallet_id : bigint <<FK>>
     bucket_id : bigint <<FK>>
     subcategory_id : bigint <<FK>>
-    credit_card_id : bigint <<FK>>  ' nullable: si aplica a tarjeta
-    related_movement_id : bigint <<FK>> ' opcional (p.ej. pago que liquida compra)
-    type : varchar(30)  ' income | expense | transfer | card_payment | card_interest
-    origin : varchar(20) ' CASH | DEBIT | CREDIT_CARD
-    card_tx_type : varchar(30) ' purchase | payment | interest | reversal | fee (si aplica)
+    credit_card_id : bigint <<FK>>
+    related_transaction_id : bigint <<FK>>
+    type : varchar(30)
+    origin : varchar(20)
+    card_tx_type : varchar(30)
     amount : decimal(14,2)
     currency : varchar(10)
     description : text
@@ -80,24 +79,24 @@ class movements {
     updated_at : datetime
 }
 
-' Credit cards master
+' Credit cards
 class credit_cards {
     + id : bigint <<PK>>
     user_id : bigint <<FK>>
-    name : varchar(100) ' "Visa - Banco X (****1234)"
+    name : varchar(100)
     bank : varchar(100)
     currency : varchar(10)
     credit_limit : decimal(14,2)
-    billing_day : tinyint ' día de corte (ej. 9)
-    payment_due_day : tinyint ' día límite pago (ej. 2)
-    annual_rate_pct : decimal(6,3) ' e.g. 64.80 (porcentaje anual)
-    monthly_rate_pct : decimal(6,3) ' opcional si banco provee
+    billing_day : tinyint
+    payment_due_day : tinyint
+    annual_rate_pct : decimal(6,3)
+    monthly_rate_pct : decimal(6,3)
     active : boolean
     created_at : datetime
     updated_at : datetime
 }
 
-' Credit card cycles (opcional: para llevar cortes y saldos)
+' Card cycles
 class card_cycles {
     + id : bigint <<PK>>
     credit_card_id : bigint <<FK>>
@@ -112,20 +111,20 @@ class card_cycles {
     created_at : datetime
 }
 
-' Tags (opcional para mejorar búsquedas)
+' Tags
 class tags {
     + id : bigint <<PK>>
     user_id : bigint <<FK>>
     name : varchar(50)
 }
 
-class movement_tag {
+class transaction_tag {
     + id : bigint <<PK>>
-    movement_id : bigint <<FK>>
+    transaction_id : bigint <<FK>>
     tag_id : bigint <<FK>>
 }
 
-' Shared/family wallets or group funds (opcional)
+' Shared funds
 class shared_funds {
     + id : bigint <<PK>>
     name : varchar(150)
@@ -139,31 +138,31 @@ class shared_fund_members {
     + id : bigint <<PK>>
     shared_fund_id : bigint <<FK>>
     user_id : bigint <<FK>>
-    role : varchar(30) ' owner | member
+    role : varchar(30)
     contribution_default : decimal(14,2)
 }
 
 ' Relationships
-users "1" -- "0..n" wallets : owns >
-users "1" -- "0..n" buckets : owns >
-buckets "1" -- "0..n" bucket_defaults : has >
-buckets "1" -- "0..n" subcategories : has >
-users "1" -- "0..n" credit_cards : owns >
-credit_cards "1" -- "0..n" card_cycles : has >
-users "1" -- "0..n" movements : records >
-wallets "1" -- "0..n" movements : used_in >
-buckets "1" -- "0..n" movements : categorized_in >
-subcategories "1" -- "0..n" movements : categorized_in >
-credit_cards "1" -- "0..n" movements : card_ops >
-movements "1" -- "0..n" movement_tag : tagged >
-tags "1" -- "0..n" movement_tag : tagged_with >
-shared_funds "1" -- "0..n" shared_fund_members : members >
-users "1" -- "0..n" shared_fund_members : member_of >
+users "1" -- "0..n" wallets
+users "1" -- "0..n" buckets
+buckets "1" -- "0..n" bucket_defaults
+buckets "1" -- "0..n" subcategories
+users "1" -- "0..n" credit_cards
+credit_cards "1" -- "0..n" card_cycles
+users "1" -- "0..n" transactions
+wallets "1" -- "0..n" transactions
+buckets "1" -- "0..n" transactions
+subcategories "1" -- "0..n" transactions
+credit_cards "1" -- "0..n" transactions
+transactions "1" -- "0..n" transaction_tag
+tags "1" -- "0..n" transaction_tag
+shared_funds "1" -- "0..n" shared_fund_members
+users "1" -- "0..n" shared_fund_members
 
-note top of movements
-    movements guarda todos los movimientos:
-    - si origin = CREDIT_CARD -> credit_card_id debe estar presente
-    - related_movement_id permite enlazar pagos a compras
+note top of transactions
+    transactions guarda todos los movimientos:
+    - Si origin = CREDIT_CARD -> credit_card_id debe existir
+    - related_transaction_id enlaza pagos con compras
 end note
 
 note top of credit_cards
