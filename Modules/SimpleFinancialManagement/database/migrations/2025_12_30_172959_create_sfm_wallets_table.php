@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('fm_wallets', function (Blueprint $table) {
+        Schema::create('sfm_wallets', function (Blueprint $table) {
             $table->id();
-
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->string('name', 100);
-            $table->string('reason', 100)->nullable();
-
-            $table->double('amount')->default(0);
-
+            $table->string('type', 30);
+            $table->string('currency', 10);
+            $table->decimal('balance', 14, 2)->default(0);
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('fm_wallets');
+        Schema::dropIfExists('sfm_wallets');
     }
 };

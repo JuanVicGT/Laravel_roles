@@ -1,6 +1,6 @@
 {
     "id": "SimpleFinancialManagement",
-    "priority": 1,
+    "priority": 2,
     "title": "Gestión financiera simple",
     "description": "Para gestionar finanzas personales de manera sencilla.",
     "version": "1.0.0"

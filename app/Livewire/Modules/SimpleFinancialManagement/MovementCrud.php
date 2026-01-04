@@ -5,8 +5,7 @@ namespace App\Livewire\Modules\SimpleFinancialManagement;
 use Livewire\Component;
 
 use Modules\SimpleFinancialManagement\Models\Wallet;
-use Modules\SimpleFinancialManagement\Models\Movement;
-use Modules\SimpleFinancialManagement\Models\Addressee;
+use Modules\SimpleFinancialManagement\Models\Transaction;
 
 use Livewire\WithPagination;
 
@@ -65,7 +64,6 @@ class MovementCrud extends Component
             ['key' => 'description', 'label' => __('Name')],
             ['key' => 'date', 'label' => __('Date')],
             ['key' => 'wallet.name', 'label' => __('Wallet')],
-            ['key' => 'addressee.nombre', 'label' => __('Destination')],
             ['key' => 'income', 'label' => __('Income')],
             ['key' => 'expense', 'label' => __('Expense')]
         ];
@@ -74,7 +72,6 @@ class MovementCrud extends Component
     public function render()
     {
         $this->wallets = Wallet::all();
-        $this->destinations = Addressee::all();
 
         $this->new_movement_type = $this->movements_types[0]['id'];
         $this->new_movement_date = date('Y-m-d');
@@ -97,7 +94,7 @@ class MovementCrud extends Component
      */
     protected function queryMovements(): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
-        return Movement::where('description', 'LIKE', '%' . $this->search . '%')
+        return Transaction::where('description', 'LIKE', '%' . $this->search . '%')
             ->with(['wallet', 'addressee'])
             ->orderBy($this->sortBy, $this->sortAsc ? 'asc' : 'desc')
             ->paginate($this->per_page);
@@ -105,7 +102,8 @@ class MovementCrud extends Component
 
     protected function loadTotals(): void
     {
-        $totals = Movement::getTotals();
+        return;
+        $totals = Transaction::getTotals();
 
         $this->total_income = $totals['total_income'];
         $this->total_expense = $totals['total_expense'];
@@ -151,21 +149,6 @@ class MovementCrud extends Component
 
     public function addDestination(): void
     {
-        $addresseeCreated = Addressee::create([
-            'nombre' => $this->new_destination_name,
-        ]);
-
-        $this->new_destination_name = '';
-
-        if (!$addresseeCreated) {
-            $this->dispatch('notify', variant: 'error', message: __('Addressee not created'));
-            $this->add_destination_modal = false;
-            return;
-        }
-
-        $this->destinations = Addressee::all();
-        $this->dispatch('notify', variant: 'success', message: __('Addressee created'));
-        $this->add_destination_modal = false;
     }
 
     public function addMovement(): void
@@ -182,7 +165,7 @@ class MovementCrud extends Component
         $income = ($this->new_movement_type == 'income') ? $this->new_movement_amount : 0;
         $expense = ($this->new_movement_type == 'expense') ? $this->new_movement_amount : 0;
 
-        $movementAdded = Movement::create([
+        $movementAdded = Transaction::create([
             'description' => $this->new_movement_name,
             'wallet_id' => $this->new_movement_wallet,
             'addressee_id' => $this->new_movement_destination,

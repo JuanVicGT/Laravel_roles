@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\SimpleFinancialManagement\Database\Seeders;
+namespace Modules\SimpleFinancialManagement\database\seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -14,32 +14,35 @@ class WalletSeeder extends Seeder
      */
     public function run(): void
     {
-        Wallet::create(
+        Wallet::insert([
             [
+                'user_id' => 1,
                 'name' => 'Efectivo',
-                'amount' => 0
-            ]
-        );
-
-        Wallet::create(
+                'type' => 'cash',
+                'currency' => 'GTQ',
+                'balance' => 0,
+            ],
             [
-                'name' => 'Ahorro',
-                'amount' => 0
-            ]
-        );
-
-        Wallet::create(
+                'user_id' => 1,
+                'name' => 'Cuenta Débito',
+                'type' => 'debit',
+                'currency' => 'GTQ',
+                'balance' => 0,
+            ],
             [
-                'name' => 'Crédito',
-                'amount' => 0
-            ]
-        );
-
-        Wallet::create(
+                'user_id' => 1,
+                'name' => 'Cuenta Ahorro',
+                'type' => 'saving',
+                'currency' => 'GTQ',
+                'balance' => 0,
+            ],
             [
-                'name' => 'Débito',
-                'amount' => 0
-            ]
-        );
+                'user_id' => 1,
+                'name' => 'Cuenta Crédito',
+                'type' => 'credit',
+                'currency' => 'GTQ',
+                'balance' => 0,
+            ],
+        ]);
     }
 }

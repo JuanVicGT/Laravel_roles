@@ -4,14 +4,13 @@ namespace Modules\SimpleFinancialManagement\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Wallet extends Model
+class Bucket extends Model
 {
-    protected $table = 'sfm_wallets';
-
+    protected $table = 'sfm_buckets';
+    
     protected $fillable = [
         'name',
-        'type',
-        'currency',
-        'balance',
+        'description',
+        'kind',
     ];
 }

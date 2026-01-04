@@ -4,14 +4,12 @@ namespace Modules\SimpleFinancialManagement\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Wallet extends Model
+class TransactionTag extends Model
 {
-    protected $table = 'sfm_wallets';
+    protected $table = 'sfm_transaction_tags';
 
     protected $fillable = [
-        'name',
-        'type',
-        'currency',
-        'balance',
+        'transaction_id',
+        'tag_id',
     ];
 }

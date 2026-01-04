@@ -1,20 +1,18 @@
 <?php
 
-namespace Modules\SimpleFinancialManagement\Http\Controllers\Movement;
+namespace Modules\SimpleFinancialManagement\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Utils\Enums\AlertTypeEnum;
-use Modules\SimpleFinancialManagement\Models\Transaction;
 
-class MovementController extends Controller
+class BucketController extends Controller
 {
     #region Vistas
     public function index()
     {
-        $this->checkPermission('movement', 'index');
+        $this->checkPermission('bucket', 'index');
 
-        $movements = Transaction::all();
+        $movements = [];
 
         return view('module::Movement.MovementIndex', compact('movements'));
     }
@@ -25,9 +23,7 @@ class MovementController extends Controller
     #endregion
 
     #region Acciones
-    public function store(Request $request)
-    {
-    }
+    public function store(Request $request) {}
 
     public function update() {}
 

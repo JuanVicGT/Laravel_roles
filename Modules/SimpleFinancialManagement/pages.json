@@ -2,11 +2,43 @@
     "priority": 1,
     "pages": [
         {
-            "icon": "s-currency-dollar",
-            "title": "Movements",
-            "menu": "FinancialManagementIndex",
-            "permission": "movement.index",
-            "route": "movement.index",
+            "icon": "o-rectangle-group",
+            "title": "Buckets",
+            "menu": "sfm_admin",
+            "permission": "bucket.index",
+            "route": "bucket.index",
+            "submenu": "none"
+        },
+        {
+            "icon": "o-credit-card",
+            "title": "Credit Cards",
+            "menu": "sfm_admin",
+            "permission": "credit_card.index",
+            "route": "credit_card.index",
+            "submenu": "none"
+        },
+        {
+            "icon": "o-rectangle-group",
+            "title": "Card Cycles",
+            "menu": "sfm_admin",
+            "permission": "card_cycle.index",
+            "route": "card_cycle.index",
+            "submenu": "none"
+        },
+        {
+            "icon": "o-tag",
+            "title": "Tags",
+            "menu": "sfm_admin",
+            "permission": "tag.index",
+            "route": "tag.index",
+            "submenu": "none"
+        },
+        {
+            "icon": "o-wallet",
+            "title": "Wallets",
+            "menu": "sfm_admin",
+            "permission": "wallet.index",
+            "route": "wallet.index",
             "submenu": "none"
         }
     ]

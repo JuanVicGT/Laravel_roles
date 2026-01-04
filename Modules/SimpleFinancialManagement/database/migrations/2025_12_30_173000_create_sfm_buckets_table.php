@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('fm_addressees', function (Blueprint $table) {
+        Schema::create('sfm_buckets', function (Blueprint $table) {
             $table->id();
-
-            $table->string('nombre', 100);
-
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->string('name', 100);
+            $table->text('description')->nullable();
+            $table->string('kind', 30);
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('fm_addressees');
+        Schema::dropIfExists('sfm_buckets');
     }
 };

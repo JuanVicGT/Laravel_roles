@@ -6,6 +6,8 @@ use App\Models\User as BaseUser;
 use App\Utils\ImportData;
 use Illuminate\Support\Facades\DB;
 
+use Database\Factories\UserFactory;
+
 class User extends BaseUser
 {
     public function assignRole(...$roles)
@@ -23,8 +25,17 @@ class User extends BaseUser
         return $this->roles()->detach();
     }
 
+    /**
+     * The factory is in the default namespace, but Laravel try load in the module namespace
+     */
+    protected static function newFactory()
+    {
+        return UserFactory::new();
+    }
+
     public static function importFromCSV(&$file)
     {
+        return;
         $usersToInsert = [];
         $errors = [];
 
@@ -44,7 +55,8 @@ class User extends BaseUser
             __('Username') => ['column' => 'username', 'key' => null, 'type' => 'random_username', 'default' => 'username']
         ];
 
-        $usersToInsert = ImportData::getImportDataFromCSV($file, $filleableColumns);
+        // $usersToInsert = ImportData::getImportDataFromCSV($file, $filleableColumns);
+        $usersToInsert = null;
 
         DB::beginTransaction();
 
